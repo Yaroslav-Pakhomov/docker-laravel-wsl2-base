@@ -1,0 +1,53 @@
+version: '3'
+
+services:
+
+    # сервер nginx
+    nginx:
+        # образ
+        image: nginx:latest
+        volumes:
+            # переносим всё содержимое в папку на сервер /var/www/, где хранится сайт
+            - ./:/var/www/
+            # ссылка(ярлык) для папки на сервере /etc/nginx/conf.d/, чтобы заменить файл расширения .conf
+            - ./_docker/nginx/conf.d/:/etc/nginx/conf.d/
+        ports:
+            - "8080:80"
+        # nginx запускается после сервиса app
+        depends_on:
+            - app
+        # название сервиса
+        container_name: project_nginx
+
+    # php + fpm
+    app:
+        build:
+            context: .
+            dockerfile: _docker/app/Dockerfile
+        volumes:
+            - ./:/var/www/
+        # app запускается после сервиса db
+        depends_on:
+            - db
+        # название сервиса
+        container_name: project_app
+
+    # БД
+    db:
+        image: mysql:latest
+        # если контейнер "упал" с бд, то всегда поднимает
+        restart: always
+        # хранение БД относительно текущего файла .yml, чтобы не потерять данные БД
+        volumes:
+            - ./tmp/db:/var/lib/mysql
+        # хранение инф-ии о БД название, логин, пароль
+        environment:
+            MYSQL_DATABASE: docker-laravel-wsl2-base-db
+            MYSQL_ROOT_PASSWORD: root # пароль для пользователя root
+        ports:
+            - "8101:3306"
+        # кодировка utf8_unicode_ci
+        command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci
+        # название сервиса
+        container_name: project_db
+
