@@ -16,3 +16,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', static function () {
     return view('welcome');
 });
+
+Route::get('/workers', static function () {
+    // dd() - отладочная функция
+
+    return 'Workers route';
+});
