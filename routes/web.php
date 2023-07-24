@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\WorkerController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,8 +18,5 @@ Route::get('/', static function () {
     return view('welcome');
 });
 
-Route::get('/workers', static function () {
-    // dd() - отладочная функция
-
-    return 'Workers route';
-});
+Route::get('/workers', [WorkerController::class, 'index']);
+Route::get('/worker/show', [WorkerController::class, 'show']);
