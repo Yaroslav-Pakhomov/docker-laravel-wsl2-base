@@ -10,4 +10,11 @@ class Worker extends Model
     use HasFactory;
 
     protected $table = 'workers';
+
+    /**
+     * Атрибуты, которые нельзя присваивать массово
+     *
+     * @var array
+     */
+    protected $guarded = [];
 }

@@ -18,5 +18,9 @@ Route::get('/', static function () {
     return view('welcome');
 });
 
+// CRUD
 Route::get('/workers', [WorkerController::class, 'index']);
-Route::get('/worker/show', [WorkerController::class, 'show']);
+Route::get('/workers/show', [WorkerController::class, 'show']);
+Route::get('/workers/create', [WorkerController::class, 'create']);
+Route::get('/workers/update', [WorkerController::class, 'update']);
+Route::get('/workers/delete', [WorkerController::class, 'delete']);
