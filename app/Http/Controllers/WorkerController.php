@@ -3,33 +3,29 @@
 namespace App\Http\Controllers;
 
 use App\Models\Worker;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 
 class WorkerController extends Controller
 {
     /**
-     * @return string
+     * @return View
      */
-    public function index(): string
+    public function index(): View
     {
         $workers = Worker::all();
-        foreach ($workers as $worker) {
-            dump($worker->name);
-            dump($worker->surname);
-            echo '<br>';
-        }
-        // dd($workers);
-        return 'Workers index route controller.';
+
+        return view('worker.index', compact('workers'));
     }
 
     /**
-     * @return string
+     * @param Worker $worker
+     *
+     * @return View
      */
-    public function show(): string
+    public function show(Worker $worker): View
     {
-        $worker = Worker::query()->find(3);
-        dump($worker->toArray());
-        return 'Worker show route controller.';
+        return view('worker.show', compact('worker'));
     }
 
     /**
