@@ -8,7 +8,7 @@
     <title>Document</title>
 </head>
 <body>
-<h1>Index</h1>
+<h1>Профиль</h1>
 <div>
     <hr>
         <div>
@@ -18,7 +18,7 @@
             <div>Age: {{ $worker->age }}</div>
             <div>Description: {{ $worker->description }}</div>
             <div>Is married: {{ $worker->is_married }}</div>
-            <div><a href="{{ route('workers.index') }}">НАЗАД</a></div>
+            <div><a href="{{ route('workers.index') }}">НАЗАД</a> <a href="{{ route('workers.edit', $worker) }}">Редактировать</a></div>
         </div>
         <hr>
 </div>

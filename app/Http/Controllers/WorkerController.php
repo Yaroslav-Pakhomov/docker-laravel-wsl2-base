@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Worker\StoreRequest;
+use App\Http\Requests\Worker\UpdateRequest;
 use App\Models\Worker;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
+// use Illuminate\Http\Request;
 
 class WorkerController extends Controller
 {
@@ -36,7 +37,6 @@ class WorkerController extends Controller
      */
     public function create(): View
     {
-
         return view('worker.create');
     }
 
@@ -55,25 +55,27 @@ class WorkerController extends Controller
     }
 
     /**
-     * @return string
+     * @param Worker $worker
+     * @return View
      */
-    public function update(): string
+    public function edit(Worker $worker): View
     {
-        $worker = Worker::query()->find(4);
+        return view('worker.edit', compact('worker'));
+    }
 
-        $worker->update([
-            'name' => 'Semen',
-            'surname' => 'Semenov',
-            'email' => 'semenov@mail.ru',
-            'age' => 40,
-            'description' => 'I am Semen.',
-            'is_married' => true,
-        ]);
+    /**
+     * @param UpdateRequest $request
+     * @param Worker $worker
+     *
+     * @return RedirectResponse
+     */
+    public function update(UpdateRequest $request, Worker $worker): RedirectResponse
+    {
+        $data = $request->validated();
+        $data['is_married'] = !empty($data['is_married']);
+        $worker->update($data);
 
-        // $worker->name = 'Anton';
-        // $worker->save();
-
-        return 'Worker ' . $worker->name . ' update route controller.';
+        return redirect()->route('workers.show', $worker);
     }
 
     /**
