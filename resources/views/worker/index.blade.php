@@ -10,6 +10,9 @@
 <body>
 <h1>Index</h1>
 <div>
+    <div>
+        <a href="{{ route('workers.create') }}">Создать рабочего</a>
+    </div>
     <hr>
     @foreach($workers as $worker)
         <div>
@@ -19,7 +22,7 @@
             <div>Age: {{ $worker->age }}</div>
             <div>Description: {{ $worker->description }}</div>
             <div>Is married: {{ $worker->is_married }}</div>
-            <div><a href="{{ route('workers.show', $worker)}}">Перейти</a></div>
+            <div><a href="{{ route('workers.show', $worker) }}">Перейти</a></div>
         </div>
         <hr>
     @endforeach

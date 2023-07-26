@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Worker\StoreRequest;
 use App\Models\Worker;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class WorkerController extends Controller
@@ -28,23 +30,28 @@ class WorkerController extends Controller
         return view('worker.show', compact('worker'));
     }
 
-    /**
-     * @return string
-     */
-    public function create(): string
-    {
-        $worker = [
-            'name' => 'Petr',
-            'surname' => 'Petrov',
-            'email' => 'petrov@mail.ru',
-            'age' => 30,
-            'description' => 'I am Petr.',
-            'is_married' => false,
-        ];
 
+    /**
+     * @return View
+     */
+    public function create(): View
+    {
+
+        return view('worker.create');
+    }
+
+    /**
+     * @param StoreRequest $request
+     *
+     * @return RedirectResponse
+     */
+    public function store(StoreRequest $request): RedirectResponse
+    {
+        $worker = $request->validated();
+        $worker['is_married'] = !empty($worker['is_married']);
         Worker::query()->create($worker);
 
-        return 'Worker Petr was created.';
+        return redirect()->route('workers.index');
     }
 
     /**

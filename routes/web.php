@@ -19,8 +19,16 @@ Route::get('/', static function () {
 });
 
 // CRUD
+// Общая страница рабочих
 Route::get('/workers', [WorkerController::class, 'index'])->name('workers.index');
-Route::get('/workers/{worker}', [WorkerController::class, 'show'])->name('workers.show');
+
+// Страница создания рабочего
 Route::get('/workers/create', [WorkerController::class, 'create'])->name('workers.create');
+Route::post('/workers', [WorkerController::class, 'store'])->name('workers.store');
+
+// Страница рабочего
+Route::get('/workers/{worker}', [WorkerController::class, 'show'])->name('workers.show');
+
+
 Route::get('/workers/update', [WorkerController::class, 'update'])->name('workers.update');
 Route::get('/workers/delete', [WorkerController::class, 'delete'])->name('workers.delete');
