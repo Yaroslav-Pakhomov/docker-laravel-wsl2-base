@@ -81,11 +81,10 @@ class WorkerController extends Controller
     /**
      * @return string
      */
-    public function delete(): string
+    public function delete(Worker $worker): string
     {
-        $worker = Worker::query()->find(2);
+        // dd($worker);
         $worker->delete();
-
-        return 'Worker ' . $worker->name . ' was deleted.';
+        return redirect()->route('workers.index');
     }
 }

@@ -28,6 +28,13 @@
             <div>
                 <a href="{{ route('workers.show', $worker) }}">Перейти</a>
                 <a href="{{ route('workers.edit', $worker) }}">Редактировать</a>
+                <br>
+                <br>
+                <form method="POST" action="{{ route('workers.delete', $worker) }}">
+                    @csrf
+                    @method('DELETE')
+                    <input type="submit" id="worker_edit" value="Удалить">
+                </form>
             </div>
         </div>
         <hr>
