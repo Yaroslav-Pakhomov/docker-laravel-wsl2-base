@@ -14,40 +14,78 @@
 <form method="POST" action="{{ route('workers.update', $worker) }}">
     @csrf
     @method('PATCH')
-    <label for="name">Имя</label>
-    <br>
-    <input id="name" type="text" name="name" class=""
-           value="{{ old('name', $worker->name) }}">
-    <br>
-    <br>
-    <label for="surname">Фамилия</label>
-    <br>
-    <input id="surname" type="text" name="surname" class=""
-           value="{{ old('surname', $worker->surname) }}">
-    <br>
-    <br>
-    <label for="email">Почта e-mail</label>
-    <br>
-    <input id="email" type="email" name="email" class=""
-           value="{{ old('email', $worker->email) }}">
+    <div>
+        <label for="name">Имя</label>
+        <br>
+        <input id="name" type="text" name="name" class="" value="{{ old('name') ?? $worker->name }}">
+        @error('name')
+        <div>
+            {{ $message }}
+        </div>
+        @enderror
+    </div>
     <br>
     <br>
-    <label for="age">Возраст</label>
+    <div>
+        <label for="surname">Фамилия</label>
+        <br>
+        <input id="surname" type="text" name="surname" class="" value="{{ old('surname', $worker->surname) }}">
+        @error('surname')
+        <div>
+            {{ $message }}
+        </div>
+        @enderror
+    </div>
     <br>
-    <input id="age" type="text" name="age" class=""
-           value="{{ old('age', $worker->age) }}">
+    <br>
+    <div>
+        <label for="email">Почта e-mail</label>
+        <br>
+        <input id="email" type="email" name="email" class="" value="{{ old('email', $worker->email) }}">
+        @error('email')
+        <div>
+            {{ $message }}
+        </div>
+        @enderror
+    </div>
     <br>
     <br>
-    <label for="description">Описание</label>
+    <div>
+        <label for="age">Возраст</label>
+        <br>
+        <input id="age" type="text" name="age" class="" value="{{ old('age', $worker->age) }}">
+        @error('age')
+        <div>
+            {{ $message }}
+        </div>
+        @enderror
+    </div>
     <br>
-    <textarea id="description" name="description" class="">
-        {{ old('description', $worker->description) }}
-    </textarea>
-    <br><br>
-    <input id="is_married" type="checkbox" name="is_married" class=""
-        {{old('is_married', $worker->is_married) ? 'checked' : ''}}
-    >
-    <label for="is_married">Женат/Замужем</label>
+    <br>
+    <div>
+        <label for="description">Описание</label>
+        <br>
+        <textarea id="description" name="description" class="">
+            {{ old('description', $worker->description) }}
+        </textarea>
+        @error('description')
+        <div>
+            {{ $message }}
+        </div>
+        @enderror
+    </div>
+    <br>
+    <br>
+    <div>
+        <input id="is_married" type="checkbox" name="is_married"
+               class="" {{old('is_married', $worker->is_married) ? 'checked' : ''}} >
+        <label for="is_married">Женат/Замужем</label>
+        @error('is_married')
+        <div>
+            {{ $message }}
+        </div>
+        @enderror
+    </div>
     <br>
     <br>
     <br>

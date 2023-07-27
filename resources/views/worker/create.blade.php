@@ -12,32 +12,76 @@
 
 <form method="POST" action="{{ route('workers.store') }}">
     @csrf
-    <label for="name">Имя</label>
-    <br>
-    <input id="name" type="text" name="name" class="">
-    <br>
-    <br>
-    <label for="surname">Фамилия</label>
-    <br>
-    <input id="surname" type="text" name="surname" class="">
-    <br>
-    <br>
-    <label for="email">Почта e-mail</label>
-    <br>
-    <input id="email" type="email" name="email" class="">
+    <div>
+        <label for="name">Имя</label>
+        <br>
+        <input id="name" type="text" name="name" class="" value="{{ old('name') }}">
+        @error('name')
+        <div>
+            {{ $message }}
+        </div>
+        @enderror
+    </div>
     <br>
     <br>
-    <label for="age">Возраст</label>
+    <div>
+        <label for="surname">Фамилия</label>
+        <br>
+        <input id="surname" type="text" name="surname" class="" value="{{ old('surname') }}">
+        @error('surname')
+        <div>
+            {{ $message }}
+        </div>
+        @enderror
+    </div>
     <br>
-    <input id="age" type="text" name="age" class="">
+    <br>
+    <div>
+        <label for="email">Почта e-mail</label>
+        <br>
+        <input id="email" type="email" name="email" class="" value="{{ old('email') }}">
+        @error('email')
+        <div>
+            {{ $message }}
+        </div>
+        @enderror
+    </div>
     <br>
     <br>
-    <label for="description">Описание</label>
+    <div>
+        <label for="age">Возраст</label>
+        <br>
+        <input id="age" type="text" name="age" class="" value="{{ old('age') }}">
+        @error('age')
+        <div>
+            {{ $message }}
+        </div>
+        @enderror
+    </div>
     <br>
-    <textarea id="description" name="description" class=""></textarea>
-    <br><br>
-    <input id="is_married" type="checkbox" name="is_married" class="">
-    <label for="is_married">Женат/Замужем</label>
+    <br>
+    <div>
+        <label for="description">Описание</label>
+        <br>
+        <textarea id="description" name="description" class="">{{ old('description') }}</textarea>
+        @error('description')
+        <div>
+            {{ $message }}
+        </div>
+        @enderror
+    </div>
+    <br>
+    <br>
+    <div>
+        <input id="is_married" type="checkbox" name="is_married"
+               class="" {{ !empty(old('is_married')) ? 'checked' : '' }}>
+        <label for="is_married">Женат/Замужем</label>
+        @error('is_married')
+        <div>
+            {{ $message }}
+        </div>
+        @enderror
+    </div>
     <br>
     <br>
     <br>

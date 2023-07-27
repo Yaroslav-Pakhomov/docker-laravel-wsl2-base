@@ -1,13 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Worker\StoreRequest;
-use App\Http\Requests\Worker\UpdateRequest;
+use App\Http\Requests\Worker\WorkerRequest;
 use App\Models\Worker;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
-// use Illuminate\Http\Request;
 
 class WorkerController extends Controller
 {
@@ -41,21 +41,22 @@ class WorkerController extends Controller
     }
 
     /**
-     * @param StoreRequest $request
+     * @param WorkerRequest $request
      *
      * @return RedirectResponse
      */
-    public function store(StoreRequest $request): RedirectResponse
+    public function store(WorkerRequest $request): RedirectResponse
     {
         $worker = $request->validated();
         $worker['is_married'] = !empty($worker['is_married']);
         Worker::query()->create($worker);
 
-        return redirect()->route('workers.index');
+        return redirect()->route('workers.index')->with('success', 'Новый работник успешно создан');
     }
 
     /**
      * @param Worker $worker
+     *
      * @return View
      */
     public function edit(Worker $worker): View
@@ -64,27 +65,28 @@ class WorkerController extends Controller
     }
 
     /**
-     * @param UpdateRequest $request
+     * @param WorkerRequest $request
      * @param Worker $worker
      *
      * @return RedirectResponse
      */
-    public function update(UpdateRequest $request, Worker $worker): RedirectResponse
+    public function update(WorkerRequest $request, Worker $worker): RedirectResponse
     {
         $data = $request->validated();
         $data['is_married'] = !empty($data['is_married']);
         $worker->update($data);
 
-        return redirect()->route('workers.show', $worker);
+        return redirect()->route('workers.show', $worker)->with('success', 'Работник успешно обновлён');
     }
 
     /**
-     * @return string
+     * @param Worker $worker
+     *
+     * @return RedirectResponse
      */
-    public function delete(Worker $worker): string
+    public function delete(Worker $worker): RedirectResponse
     {
-        // dd($worker);
         $worker->delete();
-        return redirect()->route('workers.index');
+        return redirect()->route('workers.index')->with('success', 'Работник успешно удалён');
     }
 }
