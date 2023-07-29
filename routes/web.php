@@ -20,17 +20,17 @@ Route::get('/', static function () {
 
 // CRUD
 // Общая страница рабочих
-Route::get('/workers', [WorkerController::class, 'index'])->name('workers.index');
+Route::get('/workers', [ WorkerController::class, 'index' ])->name('workers.index');
 
 // Страница создания рабочего
-Route::get('/workers/create', [WorkerController::class, 'create'])->name('workers.create');
-Route::post('/workers', [WorkerController::class, 'store'])->name('workers.store');
+Route::get('/workers/create', [ WorkerController::class, 'create' ])->name('workers.create');
+Route::post('/workers', [ WorkerController::class, 'store' ])->name('workers.store');
 
 // Страница рабочего
-Route::get('/workers/{worker}', [WorkerController::class, 'show'])->name('workers.show');
+Route::get('/workers/{worker}', [ WorkerController::class, 'show' ])->name('workers.show');
 
 // Страница обновления рабочего
-Route::get('/workers/{worker}/edit', [WorkerController::class, 'edit'])->name('workers.edit');
-Route::patch('/workers/{worker}', [WorkerController::class, 'update'])->name('workers.update');
+Route::get('/workers/{worker}/edit', [ WorkerController::class, 'edit' ])->name('workers.edit');
+Route::patch('/workers/{worker}', [ WorkerController::class, 'update' ])->name('workers.update');
 
-Route::delete('/workers/{worker}', [WorkerController::class, 'delete'])->name('workers.delete');
+Route::delete('/workers/{worker}', [ WorkerController::class, 'delete' ])->name('workers.delete');

@@ -18,7 +18,7 @@ class WorkerRequest extends AbstractRequest
     {
         $rules = [];
 
-        return array_merge(parent::updateItem(), $rules);
+        return array_merge(parent::createItem(), $rules);
     }
 
 
@@ -30,7 +30,7 @@ class WorkerRequest extends AbstractRequest
     {
         $rules = [];
 
-        return array_merge(parent::createItem(), $rules);
+        return array_merge(parent::updateItem(), $rules);
     }
 
 }
