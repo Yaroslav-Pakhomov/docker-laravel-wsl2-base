@@ -71,7 +71,7 @@
     <hr>
 
     <div class="my_nav">
-        {{ $workers->links() }}
+        {{ $workers->withQueryString()->links() }}
     </div>
 
     <hr>
@@ -102,7 +102,7 @@
     </div>
 
     <div class="my_nav">
-        {{ $workers->links() }}
+        {{ $workers->withQueryString()->links() }}
     </div>
 
     <hr>
