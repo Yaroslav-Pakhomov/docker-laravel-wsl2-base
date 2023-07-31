@@ -16,7 +16,66 @@
     <div>
         <a href="{{ route('workers.create') }}">Создать рабочего</a>
     </div>
+
+    {{--  Поиск - начало  --}}
+
+    <form method="GET" action="{{ route('workers.index') }}">
+        @csrf
+
+        <h3>Поиск</h3>
+
+        @if (count($errors) > 0)
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+        <label for="name"></label>
+        <input id="name" type="text" name="name" class="" placeholder="Имя" value="{{ request()->get('name') }}">
+
+        <label for="surname"></label>
+        <input id="surname" type="text" name="surname" class="" placeholder="Фамилия"
+               value="{{ request()->get('surname') }}">
+
+        <label for="email"></label>
+        <input id="email" type="email" name="email" class="" placeholder="Почта" value="{{ request()->get('email') }}">
+
+        <label for="age_from"></label>
+        <input id="age_from" type="text" name="age_from" class="" placeholder="Возраст от"
+               value="{{ request()->get('age_from') }}">
+
+        <label for="age_to"></label>
+        <input id="age_to" type="text" name="age_to" class="" placeholder="Возраст до"
+               value="{{ request()->get('age_to') }}">
+
+        <label for="description"></label>
+        <input id="description" type="text" name="description" class="" placeholder="Описание"
+               value="{{ request()->get('description') }}">
+
+        <input id="is_married" type="checkbox" name="is_married" class=""
+               placeholder="Имя" {{ !empty(request()->get('is_married')) ? 'checked' : '' }}>
+        <label for="is_married">Женат/Замужем</label>
+
+
+        <input type="submit" id="worker_create" value="Отправить">
+        <a href="{{ route('workers.index') }}">Сбросить</a>
+
+    </form>
+
+    {{--  Поиск - конец  --}}
+
     <hr>
+
+    <div class="my_nav">
+        {{ $workers->links() }}
+    </div>
+
+    <hr>
+
     <div>
         @foreach($workers as $worker)
             <div>
@@ -41,9 +100,13 @@
             <hr>
         @endforeach
     </div>
+
     <div class="my_nav">
         {{ $workers->links() }}
     </div>
+
+    <hr>
+
 </div>
 <style>
     .my_nav svg {

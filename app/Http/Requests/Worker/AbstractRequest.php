@@ -25,7 +25,7 @@ abstract class AbstractRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return TRUE;
+        return true;
     }
 
     /**
@@ -36,10 +36,52 @@ abstract class AbstractRequest extends FormRequest
     public function rules(): array|bool
     {
         return match ($this->method()) {
-            'POST'         => $this->createItem(),
+            'GET' => $this->indexItem(),
+            'POST' => $this->createItem(),
             'PUT', 'PATCH' => $this->updateItem(),
-            default        => FALSE,
+            default => false,
         };
+    }
+
+    /**
+     * @return array
+     */
+    protected function indexItem(): array
+    {
+        return [
+            'name'        => [
+                'nullable',
+                'max:100',
+                'string',
+            ],
+            'surname'     => [
+                'nullable',
+                'min:100',
+                'string',
+            ],
+            'email'       => [
+                'nullable',
+                'between:3,10',
+                'email',
+                'unique:' . $this->entity['table'] . ',email',
+            ],
+            'age_from'    => [
+                'nullable',
+                'integer',
+            ],
+            'age_to'      => [
+                'nullable',
+                'integer',
+            ],
+            'description' => [
+                'nullable',
+                'string',
+            ],
+            'is_married'  => [
+                'nullable',
+                'string',
+            ],
+        ];
     }
 
     /**
@@ -50,14 +92,17 @@ abstract class AbstractRequest extends FormRequest
         return [
             'name'        => [
                 'required',
+                'max:100',
                 'string',
             ],
             'surname'     => [
                 'required',
+                'min:100',
                 'string',
             ],
             'email'       => [
                 'required',
+                'between:3,10',
                 'email',
                 'unique:' . $this->entity['table'] . ',email',
             ],
@@ -86,14 +131,17 @@ abstract class AbstractRequest extends FormRequest
         return [
             'name'        => [
                 'required',
+                'max:100',
                 'string',
             ],
             'surname'     => [
                 'required',
+                'min:100',
                 'string',
             ],
             'email'       => [
                 'required',
+                'between:3,10',
                 'email',
                 Rule::unique($this->entity['table'], 'email')->ignore($model->id),
             ],
@@ -146,6 +194,8 @@ abstract class AbstractRequest extends FormRequest
             'surname'     => 'Фамилия',
             'email'       => 'Email адрес',
             'age'         => 'Возраст',
+            'age_from'    => 'Возраст от',
+            'age_to'      => 'Возраст до',
             'description' => 'Описание',
             'is_married'  => 'Семейное положение',
         ];

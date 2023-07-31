@@ -11,6 +11,17 @@ class WorkerRequest extends AbstractRequest
 {
 
     /**
+     * Объединяет дефолтные правила и правила, специфичные для поиска
+     * для проверки данных при поиске работников
+     */
+    protected function indexItem(): array
+    {
+        $rules = [];
+
+        return array_merge(parent::indexItem(), $rules);
+    }
+
+    /**
      * Объединяет дефолтные правила и правила, специфичные для создания
      * для проверки данных при добавлении нового работника
      */
