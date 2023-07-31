@@ -25,7 +25,7 @@ abstract class AbstractRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        return TRUE;
     }
 
     /**
@@ -36,9 +36,9 @@ abstract class AbstractRequest extends FormRequest
     public function rules(): array|bool
     {
         return match ($this->method()) {
-            'POST' => $this->createItem(),
+            'POST'         => $this->createItem(),
             'PUT', 'PATCH' => $this->updateItem(),
-            'default' => false,
+            default        => FALSE,
         };
     }
 
@@ -129,7 +129,7 @@ abstract class AbstractRequest extends FormRequest
             'integer'  => 'Поле :attribute должно быть числом.',
             'email'    => [
                 'email' => 'Поле :attribute должно быть формата электронной почты.',
-            ]
+            ],
 
         ];
     }

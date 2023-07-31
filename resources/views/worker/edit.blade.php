@@ -10,7 +10,6 @@
 <body>
 <h1>Редактирование рабочего</h1>
 
-{{--@dump($worker)--}}
 <form method="POST" action="{{ route('workers.update', $worker) }}">
     @csrf
     @method('PATCH')
