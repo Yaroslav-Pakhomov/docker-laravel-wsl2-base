@@ -16,7 +16,7 @@ abstract class AbstractRequest extends FormRequest
      * @var array
      */
     protected array $entity = [
-        'name'  => 'worker',
+        'name' => 'worker',
         'table' => 'workers',
     ];
 
@@ -49,27 +49,27 @@ abstract class AbstractRequest extends FormRequest
     protected function indexItem(): array
     {
         return [
-            'name'        => [
+            'name' => [
                 'nullable',
                 'max:100',
                 'string',
             ],
-            'surname'     => [
+            'surname' => [
                 'nullable',
-                'min:100',
+                'min:3',
                 'string',
             ],
-            'email'       => [
+            'email' => [
                 'nullable',
-                'between:3,10',
+                'between:3,100',
                 'email',
                 'unique:' . $this->entity['table'] . ',email',
             ],
-            'age_from'    => [
+            'age_from' => [
                 'nullable',
                 'integer',
             ],
-            'age_to'      => [
+            'age_to' => [
                 'nullable',
                 'integer',
             ],
@@ -77,7 +77,7 @@ abstract class AbstractRequest extends FormRequest
                 'nullable',
                 'string',
             ],
-            'is_married'  => [
+            'is_married' => [
                 'nullable',
                 'string',
             ],
@@ -90,23 +90,23 @@ abstract class AbstractRequest extends FormRequest
     protected function createItem(): array
     {
         return [
-            'name'        => [
+            'name' => [
                 'required',
                 'max:100',
                 'string',
             ],
-            'surname'     => [
+            'surname' => [
                 'required',
-                'min:100',
+                'min:3',
                 'string',
             ],
-            'email'       => [
+            'email' => [
                 'required',
-                'between:3,10',
+                'between:3,100',
                 'email',
                 'unique:' . $this->entity['table'] . ',email',
             ],
-            'age'         => [
+            'age' => [
                 'nullable',
                 'integer',
             ],
@@ -114,7 +114,7 @@ abstract class AbstractRequest extends FormRequest
                 'nullable',
                 'string',
             ],
-            'is_married'  => [
+            'is_married' => [
                 'nullable',
                 'string',
             ],
@@ -129,23 +129,23 @@ abstract class AbstractRequest extends FormRequest
     {
         $model = $this->route($this->entity['name']);
         return [
-            'name'        => [
+            'name' => [
                 'required',
                 'max:100',
                 'string',
             ],
-            'surname'     => [
+            'surname' => [
                 'required',
-                'min:100',
+                'min:3',
                 'string',
             ],
-            'email'       => [
+            'email' => [
                 'required',
-                'between:3,10',
+                'between:3,100',
                 'email',
                 Rule::unique($this->entity['table'], 'email')->ignore($model->id),
             ],
-            'age'         => [
+            'age' => [
                 'nullable',
                 'integer',
             ],
@@ -153,7 +153,7 @@ abstract class AbstractRequest extends FormRequest
                 'nullable',
                 'string',
             ],
-            'is_married'  => [
+            'is_married' => [
                 'nullable',
                 'string',
             ],
@@ -170,12 +170,12 @@ abstract class AbstractRequest extends FormRequest
     {
         return [
             'required' => 'Поле :attribute является обязательным для заполнения.',
-            'between'  => 'Значение :input поля :attribute не находится в диапозоне :min - :max.',
-            'max'      => 'Поле :attribute не должно превышать :max.',
-            'min'      => 'Поле :attribute не должно быть меньше :min.',
-            'string'   => 'Поле :attribute должно быть строкой.',
-            'integer'  => 'Поле :attribute должно быть числом.',
-            'email'    => [
+            'between' => 'Значение :input поля :attribute не находится в диапозоне :min - :max.',
+            'max' => 'Поле :attribute не должно превышать :max.',
+            'min' => 'Поле :attribute не должно быть меньше :min.',
+            'string' => 'Поле :attribute должно быть строкой.',
+            'integer' => 'Поле :attribute должно быть числом.',
+            'email' => [
                 'email' => 'Поле :attribute должно быть формата электронной почты.',
             ],
 
@@ -190,14 +190,14 @@ abstract class AbstractRequest extends FormRequest
     public function attributes(): array
     {
         return [
-            'name'        => 'Имя',
-            'surname'     => 'Фамилия',
-            'email'       => 'Email адрес',
-            'age'         => 'Возраст',
-            'age_from'    => 'Возраст от',
-            'age_to'      => 'Возраст до',
+            'name' => 'Имя',
+            'surname' => 'Фамилия',
+            'email' => 'Email адрес',
+            'age' => 'Возраст',
+            'age_from' => 'Возраст от',
+            'age_to' => 'Возраст до',
             'description' => 'Описание',
-            'is_married'  => 'Семейное положение',
+            'is_married' => 'Семейное положение',
         ];
     }
 }

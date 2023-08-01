@@ -68,12 +68,15 @@
         <div>
             @foreach($workers as $worker)
                 <div>
-                    <div>Name: {{ $worker->name }}</div>
-                    <div>Surname: {{ $worker->surname }}</div>
-                    <div>Email: {{ $worker->email }}</div>
-                    <div>Age: {{ $worker->age }}</div>
-                    <div>Description: {{ $worker->description }}</div>
-                    <div>Is married: {{ $worker->is_married }}</div>
+                    <div>Имя: {{ $worker->name }}</div>
+                    <div>Фамилия: {{ $worker->surname }}</div>
+                    <div>Почта: {{ $worker->email }}</div>
+                    <div>Возраст: {{ $worker->age }}</div>
+                    <div>Описание: {{ $worker->description }}</div>
+                    <div>Женат/Замужем: {{ $worker->is_married ? 'Да' : 'Нет'}}</div>
+
+                    <br>
+
                     <div>
                         <a href="{{ route('workers.show', $worker) }}">Перейти</a>
                         <a href="{{ route('workers.edit', $worker) }}">Редактировать</a>
@@ -85,6 +88,7 @@
                             <input type="submit" id="worker_edit" value="Удалить">
                         </form>
                     </div>
+                    <br>
                 </div>
                 <hr>
             @endforeach

@@ -61,8 +61,8 @@
             <label for="description">Описание</label>
             <br>
             <textarea id="description" name="description" class="">
-            {{ old('description', $worker->description) }}
-        </textarea>
+                {{ old('description', $worker->description) }}
+            </textarea>
             @error('description')
             <div>
                 {{ $message }}
