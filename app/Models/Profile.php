@@ -6,13 +6,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Worker extends Model
+class Profile extends Model
 {
     use HasFactory;
 
-    protected $table = 'workers';
+    protected $table = 'profiles';
 
     /**
      * Атрибуты, которые нельзя присваивать массово
@@ -21,11 +21,12 @@ class Worker extends Model
      */
     protected $guarded = [];
 
+
     /**
-     * Получите профиль, который имеет работник.
+     * Получите работника, к которому принадлежит профиль.
      */
-    public function profile(): HasOne
+    public function worker(): BelongsTo
     {
-        return $this->hasOne(Profile::class);
+        return $this->belongsTo(Worker::class);
     }
 }
