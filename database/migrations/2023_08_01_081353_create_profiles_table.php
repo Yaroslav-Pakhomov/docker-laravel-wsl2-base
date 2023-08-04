@@ -26,7 +26,8 @@ return new class extends Migration {
             // IDx
             $table->index('worker_id');
 
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
         });
     }
 
