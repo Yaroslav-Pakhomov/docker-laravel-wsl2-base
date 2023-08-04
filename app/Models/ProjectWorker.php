@@ -9,7 +9,7 @@ class ProjectWorker extends Model
 {
     use HasFactory;
 
-    protected $table = 'project_workers';
+    protected $table = 'project_worker';
 
     /**
      * Атрибуты, которые нельзя присваивать массово

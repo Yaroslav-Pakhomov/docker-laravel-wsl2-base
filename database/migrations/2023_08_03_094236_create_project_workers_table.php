@@ -10,7 +10,7 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('project_workers', function (Blueprint $table) {
+        Schema::create('project_worker', function (Blueprint $table) {
             $table->id();
 
             // FK
@@ -24,7 +24,8 @@ return new class extends Migration {
             // Уникальность связок ключей
             $table->unique(['project_id', 'worker_id']);
 
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
         });
     }
 

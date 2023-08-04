@@ -25,7 +25,7 @@ class Position extends Model
      */
     public function workers(): HasMany
     {
-        return $this->hasMany(Worker::class, 'position_id', 'id');
+        return $this->hasMany(Worker::class);
     }
 
     /**
@@ -33,6 +33,6 @@ class Position extends Model
      */
     public function department(): BelongsTo
     {
-        return $this->belongsTo(Department::class, 'department_id', 'id');
+        return $this->belongsTo(Department::class);
     }
 }

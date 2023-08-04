@@ -35,8 +35,8 @@ class DevCommand extends Command
      */
     public function handle()
     {
-        // $this->prepareData();
-        // $this->prepareManyToMany();
+        $this->prepareData();
+        $this->prepareManyToMany();
 
         // Получаем должность
         $position = Position::query()->find(1);
@@ -214,7 +214,7 @@ class DevCommand extends Command
             'skill'             => 'JavaScript, PHP',
             'experience'        => 3,
             'finished_study_at' => '2022-07-05',
-            'worker_id'         => $worker1->id,
+            // 'worker_id'         => $worker1->id,
         ];
         $profileData2 = [
             'city'              => 'Екатеринбург',
@@ -252,7 +252,11 @@ class DevCommand extends Command
             'worker_id'         => $worker6->id,
         ];
 
-        $profile1 = Profile::query()->create($profileData1);
+
+        // $profile1 = Profile::query()->create($profileData1);
+        // Вместо способа выше, через отношения
+        $profile1 = $worker1->profile()->create($profileData1);
+
         $profile2 = Profile::query()->create($profileData2);
         $profile3 = Profile::query()->create($profileData3);
         $profile4 = Profile::query()->create($profileData4);
@@ -264,7 +268,7 @@ class DevCommand extends Command
         dump($profile3->city);
         dump($profile4->city);
         dump($profile5->city);
-        dd($profile6->city);
+        dump($profile6->city);
     }
 
     private function prepareManyToMany()
@@ -293,77 +297,54 @@ class DevCommand extends Command
         $project2 = Project::query()->create($projectData2);
         $project3 = Project::query()->create($projectData3);
 
+        // Проект 1 с 1_1 по 1_4 и записи в БД
+        $project1->workers()->attach([
+            $workerResearcher1->id,
+            $workerResearcher2->id,
+            $workerLeadingResearcher1->id,
+            $workerLaboratoryHead->id,
+        ]);
+
+        // Проект 2 с 2_1 по 2_4 и записи в БД
+        $project2->workers()->attach([
+            $workerResearcher2->id,
+            $workerResearcher3->id,
+            $workerLeadingResearcher2->id,
+            $workerLaboratoryHead->id,
+        ]);
+
+        // Проект 3 с 3_1 по 3_4 и записи в БД
+        $project3->workers()->attach([
+            $workerResearcher1->id,
+            $workerResearcher3->id,
+            $workerLeadingResearcher1->id,
+            $workerLaboratoryHead->id,
+        ]);
+
+
         // Проект 1
-        $projectWorkerData1_1 = [
-            'project_id' => $project1->id,
-            'worker_id'  => $workerResearcher1->id,
-        ];
-        $projectWorkerData1_2 = [
-            'project_id' => $project1->id,
-            'worker_id'  => $workerResearcher2->id,
-        ];
-        $projectWorkerData1_3 = [
-            'project_id' => $project1->id,
-            'worker_id'  => $workerLeadingResearcher1->id,
-        ];
-        $projectWorkerData1_4 = [
-            'project_id' => $project1->id,
-            'worker_id'  => $workerLaboratoryHead->id,
-        ];
-
-        // Проект 2
-        $projectWorkerData2_1 = [
-            'project_id' => $project2->id,
-            'worker_id'  => $workerResearcher2->id,
-        ];
-        $projectWorkerData2_2 = [
-            'project_id' => $project2->id,
-            'worker_id'  => $workerResearcher3->id,
-        ];
-        $projectWorkerData2_3 = [
-            'project_id' => $project2->id,
-            'worker_id'  => $workerLeadingResearcher2->id,
-        ];
-        $projectWorkerData2_4 = [
-            'project_id' => $project2->id,
-            'worker_id'  => $workerLaboratoryHead->id,
-        ];
-
-        // Проект 2
-        $projectWorkerData3_1 = [
-            'project_id' => $project3->id,
-            'worker_id'  => $workerResearcher1->id,
-        ];
-        $projectWorkerData3_2 = [
-            'project_id' => $project3->id,
-            'worker_id'  => $workerResearcher3->id,
-        ];
-        $projectWorkerData3_3 = [
-            'project_id' => $project3->id,
-            'worker_id'  => $workerLeadingResearcher1->id,
-        ];
-        $projectWorkerData3_4 = [
-            'project_id' => $project3->id,
-            'worker_id'  => $workerLaboratoryHead->id,
-        ];
-
+        // $projectWorkerData1_1 = [
+        //     'project_id' => $project1->id,
+        //     'worker_id'  => $workerResearcher1->id,
+        // ];
+        // $projectWorkerData1_2 = [
+        //     'project_id' => $project1->id,
+        //     'worker_id'  => $workerResearcher2->id,
+        // ];
+        // $projectWorkerData1_3 = [
+        //     'project_id' => $project1->id,
+        //     'worker_id'  => $workerLeadingResearcher1->id,
+        // ];
+        // $projectWorkerData1_4 = [
+        //     'project_id' => $project1->id,
+        //     'worker_id'  => $workerLaboratoryHead->id,
+        // ];
         // Проект 1 запись в БД
-        $projectWorker1_1 = ProjectWorker::query()->create($projectWorkerData1_1);
-        $projectWorker1_2 = ProjectWorker::query()->create($projectWorkerData1_2);
-        $projectWorker1_3 = ProjectWorker::query()->create($projectWorkerData1_3);
-        $projectWorker1_4 = ProjectWorker::query()->create($projectWorkerData1_4);
+        // $projectWorker1_1 = ProjectWorker::query()->create($projectWorkerData1_1);
+        // $projectWorker1_2 = ProjectWorker::query()->create($projectWorkerData1_2);
+        // $projectWorker1_3 = ProjectWorker::query()->create($projectWorkerData1_3);
+        // $projectWorker1_4 = ProjectWorker::query()->create($projectWorkerData1_4);
 
-        // Проект 2 запись в БД
-        $projectWorker2_1 = ProjectWorker::query()->create($projectWorkerData2_1);
-        $projectWorker2_2 = ProjectWorker::query()->create($projectWorkerData2_2);
-        $projectWorker2_3 = ProjectWorker::query()->create($projectWorkerData2_3);
-        $projectWorker2_4 = ProjectWorker::query()->create($projectWorkerData2_4);
-
-        // Проект 3 запись в БД
-        $projectWorker3_1 = ProjectWorker::query()->create($projectWorkerData3_1);
-        $projectWorker3_2 = ProjectWorker::query()->create($projectWorkerData3_2);
-        $projectWorker3_3 = ProjectWorker::query()->create($projectWorkerData3_3);
-        $projectWorker3_4 = ProjectWorker::query()->create($projectWorkerData3_4);
 
         dd('Загружено');
     }
