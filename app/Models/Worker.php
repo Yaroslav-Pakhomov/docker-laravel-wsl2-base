@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 class Worker extends Model
 {
@@ -25,6 +26,8 @@ class Worker extends Model
 
     /**
      * Получите профиль, который имеет работник.
+     *
+     * @return HasOne
      */
     public function profile(): HasOne
     {
@@ -33,6 +36,8 @@ class Worker extends Model
 
     /**
      * Получите должность, которую имеет работник.
+     *
+     * @return BelongsTo
      */
     public function position(): BelongsTo
     {
@@ -41,9 +46,22 @@ class Worker extends Model
 
     /**
      * Проекты, которые принадлежат работнику.
+     *
+     * @return BelongsToMany
      */
     public function projects(): BelongsToMany
     {
         return $this->belongsToMany(Project::class);
+    }
+
+    /**
+     * Аватар, который принадлежит работнику.
+     * Отношение один к одному полиморф (One To One (Polymorphic))
+     *
+     * @return MorphOne
+     */
+    public function avatar(): MorphOne
+    {
+        return $this->morphOne(Avatar::class, 'avatarable');
     }
 }

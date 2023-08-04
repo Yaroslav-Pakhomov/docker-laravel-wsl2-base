@@ -4,15 +4,14 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
+use App\Models\Avatar;
+use App\Models\Client;
 use App\Models\Department;
 use App\Models\Position;
 use App\Models\Profile;
 use App\Models\Project;
-use App\Models\ProjectWorker;
 use App\Models\Worker;
 use Illuminate\Console\Command;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
 
 class DevCommand extends Command
 {
@@ -35,8 +34,9 @@ class DevCommand extends Command
      */
     public function handle()
     {
-        $this->prepareData();
-        $this->prepareManyToMany();
+        // $this->prepareData();
+        // $this->prepareManyToMany();
+        // $this->prepareOneToOnePolymorphic();
 
         // Получаем должность
         $position = Position::query()->find(1);
@@ -94,14 +94,25 @@ class DevCommand extends Command
 
         // Отдел работника, через отношение 'Один к одному через'
         $department = Department::query()->find(1);
-        // Получим Зав. лаба.
-        dd($department->positionWorker(3)->get()->toArray());
+        // // Получим Зав. лаба.
+        // dd($department->positionWorker(3)->get()->toArray());
 
         $workers = Worker::query()->whereIn('id', [1, 2, 3,])->get();
         // pluck() - для выбора колонки из таблицы 'workers'
-        $position_unique = $workers->pluck('position_id')->unique();
-        $position_unique = $position_unique->toArray();
-        dd(Position::query()->whereIn('id', $position_unique)->get()->toArray());
+        // $position_unique = $workers->pluck('position_id')->unique();
+        // $position_unique = $position_unique->toArray();
+        // dd(Position::query()->whereIn('id', $position_unique)->get()->toArray());
+
+        // Отношение один к одному полиморф (One To One (Polymorphic))
+        $worker1 = Worker::query()->find(1);
+        dump($worker1->avatar->toArray());
+
+        $client1 = Client::query()->find(1);
+        dump($client1->avatar->toArray());
+
+        $avatar4 = Avatar::query()->find(4);
+        dd($avatar4->avatarable->toArray());
+
 
         return 0;
     }
@@ -146,7 +157,7 @@ class DevCommand extends Command
             'email'       => 'aleckseev@mail.ru',
             'age'         => 23,
             'description' => 'Я Алексей Алексеев.',
-            'is_married'  => FALSE,
+            'is_married'  => false,
             'position_id' => $position1->id,
         ];
         $workerData2 = [
@@ -155,7 +166,7 @@ class DevCommand extends Command
             'email'       => 'alecksandrov@mail.ru',
             'age'         => 23,
             'description' => 'Я Александр Александров.',
-            'is_married'  => FALSE,
+            'is_married'  => false,
             'position_id' => $position1->id,
         ];
         $workerData3 = [
@@ -164,7 +175,7 @@ class DevCommand extends Command
             'email'       => 'semenov@mail.ru',
             'age'         => 35,
             'description' => 'Я Семен Семенов.',
-            'is_married'  => TRUE,
+            'is_married'  => true,
             'position_id' => $position2->id,
         ];
         $workerData4 = [
@@ -173,7 +184,7 @@ class DevCommand extends Command
             'email'       => 'ivanov@mail.ru',
             'age'         => 45,
             'description' => 'Я Иван Иванов.',
-            'is_married'  => TRUE,
+            'is_married'  => true,
             'position_id' => $position2->id,
         ];
         $workerData5 = [
@@ -182,7 +193,7 @@ class DevCommand extends Command
             'email'       => 'petrov@mail.ru',
             'age'         => 55,
             'description' => 'Я Петр Петров.',
-            'is_married'  => TRUE,
+            'is_married'  => true,
             'position_id' => $position3->id,
         ];
         $workerData6 = [
@@ -191,7 +202,7 @@ class DevCommand extends Command
             'email'       => 'sidorov@mail.ru',
             'age'         => 65,
             'description' => 'Я Семен Семенов.',
-            'is_married'  => TRUE,
+            'is_married'  => true,
             'position_id' => $position2->id,
         ];
 
@@ -201,6 +212,27 @@ class DevCommand extends Command
         $worker4 = Worker::query()->create($workerData4);
         $worker5 = Worker::query()->create($workerData5);
         $worker6 = Worker::query()->create($workerData6);
+
+        // Отношение один к одному полиморф (One To One (Polymorphic))
+        $worker1->avatar()->create([
+            'path' => 'workers/avatar/worker1.img',
+        ]);
+        $worker2->avatar()->create([
+            'path' => 'workers/avatar/worker2.img',
+        ]);
+        $worker3->avatar()->create([
+            'path' => 'workers/avatar/worker3.img',
+        ]);
+        $worker4->avatar()->create([
+            'path' => 'workers/avatar/worker4.img',
+        ]);
+        $worker5->avatar()->create([
+            'path' => 'workers/avatar/worker5.img',
+        ]);
+        $worker6->avatar()->create([
+            'path' => 'workers/avatar/worker6.img',
+        ]);
+
         dump($worker1->name);
         dump($worker2->name);
         dump($worker3->name);
@@ -273,7 +305,6 @@ class DevCommand extends Command
 
     private function prepareManyToMany()
     {
-
         $workerResearcher1 = Worker::query()->find(1);
         $workerResearcher2 = Worker::query()->find(2);
         $workerResearcher3 = Worker::query()->find(6);
@@ -321,7 +352,6 @@ class DevCommand extends Command
             $workerLaboratoryHead->id,
         ]);
 
-
         // Проект 1
         // $projectWorkerData1_1 = [
         //     'project_id' => $project1->id,
@@ -345,7 +375,36 @@ class DevCommand extends Command
         // $projectWorker1_3 = ProjectWorker::query()->create($projectWorkerData1_3);
         // $projectWorker1_4 = ProjectWorker::query()->create($projectWorkerData1_4);
 
+        dump('Многие ко многим готовы');
+    }
 
-        dd('Загружено');
+    private function prepareOneToOnePolymorphic()
+    {
+        $clientData1 = [
+            'name' => 'Клиент 1',
+        ];
+        $clientData2 = [
+            'name' => 'Клиент 2',
+        ];
+        $clientData3 = [
+            'name' => 'Клиент 3',
+        ];
+
+        $client1 = Client::query()->create($clientData1);
+        $client2 = Client::query()->create($clientData2);
+        $client3 = Client::query()->create($clientData3);
+
+        // Отношение один к одному полиморф (One To One (Polymorphic))
+        $client1->avatar()->create([
+            'path' => 'clients/avatar/client1.img',
+        ]);
+        $client2->avatar()->create([
+            'path' => 'clients/avatar/client2.img',
+        ]);
+        $client3->avatar()->create([
+            'path' => 'clients/avatar/client3.img',
+        ]);
+
+        dd('Клиенты готовы');
     }
 }
