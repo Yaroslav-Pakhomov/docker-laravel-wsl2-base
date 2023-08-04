@@ -69,11 +69,23 @@ class DevCommand extends Command
 
         // Получаем проект
         $project = Project::query()->find(2);
+        // // Находим работников проекта
+        // if (isset($project->workers)) {
+        //     dd($project->workers->toArray());
+        // }
 
-        // Находим работников проекта
-        if (isset($project->workers)) {
-            dd($project->workers->toArray());
-        }
+        // если писать в конце скобки $worker->projects(), то вызывается метод и можно продолжать запрос к таблице в методе, т.е. 'project_workers'
+        //
+        // метод attach() добавляет запись в таблицу, можно передавать массив attach([$project->id, $project1->id, $project2->id,])
+        //
+        // метод detach() - противоположный методу attach()
+        //
+        // метод toggle() переключает запись в таблицу создаёт/удаляет, можно передавать массив toggle([$project->id, $project1->id, $project2->id,])
+        //
+        // метод sync() записывает то, что ему передают всё, что было до этого он удаляет в таблице, можно передавать массив sync([$project->id, $project1->id, $project2->id,])
+
+        $worker->projects()->attach($project->id);
+        dd('Запись в project_workers добавлена');
 
         $workers = Worker::query()->whereIn('id', [1, 2, 3,])->get();
         // pluck() - для выбора колонки из таблицы 'workers'
