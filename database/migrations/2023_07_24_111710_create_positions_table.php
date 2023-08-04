@@ -16,6 +16,13 @@ return new class extends Migration {
             $table->string('title', 50);
             $table->text('description')->nullable();
 
+            // Должность принадлежит одному отделу
+            // FK
+            $table->foreignId('department_id')->nullable()->constrained('departments')->cascadeOnUpdate()->nullOnDelete();
+
+            // IDx
+            $table->index('department_id');
+
             $table->timestamps();
         });
     }

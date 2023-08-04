@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
+use App\Models\Department;
 use App\Models\Position;
 use App\Models\Profile;
 use App\Models\Project;
@@ -67,6 +68,10 @@ class DevCommand extends Command
         //     dd($projects);
         // }
 
+        // // К какому отделу принадлежит работник
+        // dd($worker->position->department->toArray());
+
+
         // Получаем проект
         $project = Project::query()->find(2);
         // // Находим работников проекта
@@ -84,8 +89,13 @@ class DevCommand extends Command
         //
         // метод sync() записывает то, что ему передают всё, что было до этого он удаляет в таблице, можно передавать массив sync([$project->id, $project1->id, $project2->id,])
 
-        $worker->projects()->attach($project->id);
-        dd('Запись в project_workers добавлена');
+        // $worker->projects()->attach($project->id);
+        // dd('Запись в project_workers добавлена');
+
+        // Отдел работника, через отношение 'Один к одному через'
+        $department = Department::query()->find(1);
+        // Получим Зав. лаба.
+        dd($department->positionWorker(3)->get()->toArray());
 
         $workers = Worker::query()->whereIn('id', [1, 2, 3,])->get();
         // pluck() - для выбора колонки из таблицы 'workers'
@@ -98,18 +108,28 @@ class DevCommand extends Command
 
     private function prepareData()
     {
+        $department1 = Department::query()->create([
+            'title' => 'ИТ',
+        ]);
+        $department2 = Department::query()->create([
+            'title' => 'Аналитика',
+        ]);
+
         // Данные для записи в таблицу 'positions'
         $positionData1 = [
-            'title'       => 'Научный сотрудник',
-            'description' => 'Описание должности научного сотрудника',
+            'title'         => 'Научный сотрудник',
+            'description'   => 'Описание должности научного сотрудника',
+            'department_id' => $department1->id,
         ];
         $positionData2 = [
-            'title'       => 'Ведущий науный сотрудник',
-            'description' => 'Описание должности ведущий научного сотрудника',
+            'title'         => 'Ведущий науный сотрудник',
+            'description'   => 'Описание должности ведущий научного сотрудника',
+            'department_id' => $department1->id,
         ];
         $positionData3 = [
-            'title'       => 'Заведующий лаборатории',
-            'description' => 'Описание должности заведующего лаборатории',
+            'title'         => 'Заведующий лаборатории',
+            'description'   => 'Описание должности заведующего лаборатории',
+            'department_id' => $department1->id,
         ];
 
         $position1 = Position::query()->create($positionData1);
