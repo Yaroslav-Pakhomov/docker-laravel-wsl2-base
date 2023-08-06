@@ -10,6 +10,7 @@ use App\Models\Department;
 use App\Models\Position;
 use App\Models\Profile;
 use App\Models\Project;
+use App\Models\Review;
 use App\Models\Worker;
 use Illuminate\Console\Command;
 
@@ -36,7 +37,7 @@ class DevCommand extends Command
     {
         // $this->prepareData();
         // $this->prepareManyToMany();
-        // $this->prepareOneToOnePolymorphic();
+        // $this->preparePolymorphic();
 
         // Получаем должность
         $position = Position::query()->find(1);
@@ -103,15 +104,41 @@ class DevCommand extends Command
         // $position_unique = $position_unique->toArray();
         // dd(Position::query()->whereIn('id', $position_unique)->get()->toArray());
 
-        // Отношение один к одному полиморф (One To One (Polymorphic))
+
+        // ---------------------------------------------------------------------------
+        // Отношение один к одному полиморф (One To One (Polymorphic)) - начало
+        // ---------------------------------------------------------------------------
+
+        // $worker1 = Worker::query()->find(1);
+        // dump($worker1->avatar->toArray());
+        //
+        // $client1 = Client::query()->find(1);
+        // dump($client1->avatar->toArray());
+        //
+        // $avatar4 = Avatar::query()->find(4);
+        // dd($avatar4->avatarable->toArray());
+
+        // ---------------------------------------------------------------------------
+        // Отношение один к одному полиморф (One To One (Polymorphic)) - конец
+        // ---------------------------------------------------------------------------
+
+
+        // ---------------------------------------------------------------------------
+        // Отношение один к многим полиморф (One To Many (Polymorphic)) - начало
+        // ---------------------------------------------------------------------------
+
         $worker1 = Worker::query()->find(1);
-        dump($worker1->avatar->toArray());
+        dump($worker1->reviews->toArray());
 
         $client1 = Client::query()->find(1);
-        dump($client1->avatar->toArray());
+        dump($client1->reviews->toArray());
 
-        $avatar4 = Avatar::query()->find(4);
-        dd($avatar4->avatarable->toArray());
+        $review4 = Review::query()->find(4);
+        dd($review4->reviewable->toArray());
+
+        // ---------------------------------------------------------------------------
+        // Отношение один к многим полиморф (One To Many (Polymorphic)) - конец
+        // ---------------------------------------------------------------------------
 
 
         return 0;
@@ -213,7 +240,10 @@ class DevCommand extends Command
         $worker5 = Worker::query()->create($workerData5);
         $worker6 = Worker::query()->create($workerData6);
 
-        // Отношение один к одному полиморф (One To One (Polymorphic))
+        // ---------------------------------------------------------------------------
+        // Отношение один к одному полиморф (One To One (Polymorphic)) - начало
+        // ---------------------------------------------------------------------------
+
         $worker1->avatar()->create([
             'path' => 'workers/avatar/worker1.img',
         ]);
@@ -232,6 +262,98 @@ class DevCommand extends Command
         $worker6->avatar()->create([
             'path' => 'workers/avatar/worker6.img',
         ]);
+
+        // ---------------------------------------------------------------------------
+        // Отношение один к одному полиморф (One To One (Polymorphic)) - конец
+        // ---------------------------------------------------------------------------
+
+
+        // ---------------------------------------------------------------------------
+        // Отношение один к многим полиморф (One To Many (Polymorphic)) - начало
+        // ---------------------------------------------------------------------------
+
+        $worker1->reviews()->create([
+            'title'   => 'Отзыв 1',
+            'content' => 'Содержание отзыва 1.',
+        ]);
+        $worker1->reviews()->create([
+            'title'   => 'Отзыв 2',
+            'content' => 'Содержание отзыва 2.',
+        ]);
+        $worker1->reviews()->create([
+            'title'   => 'Отзыв 3',
+            'content' => 'Содержание отзыва 3.',
+        ]);
+
+        $worker2->reviews()->create([
+            'title'   => 'Отзыв 1',
+            'content' => 'Содержание отзыва 1.',
+        ]);
+        $worker2->reviews()->create([
+            'title'   => 'Отзыв 2',
+            'content' => 'Содержание отзыва 2.',
+        ]);
+        $worker2->reviews()->create([
+            'title'   => 'Отзыв 3',
+            'content' => 'Содержание отзыва 3.',
+        ]);
+
+        $worker3->reviews()->create([
+            'title'   => 'Отзыв 1',
+            'content' => 'Содержание отзыва 1.',
+        ]);
+        $worker3->reviews()->create([
+            'title'   => 'Отзыв 2',
+            'content' => 'Содержание отзыва 2.',
+        ]);
+        $worker3->reviews()->create([
+            'title'   => 'Отзыв 3',
+            'content' => 'Содержание отзыва 3.',
+        ]);
+
+        $worker4->reviews()->create([
+            'title'   => 'Отзыв 1',
+            'content' => 'Содержание отзыва 1.',
+        ]);
+        $worker4->reviews()->create([
+            'title'   => 'Отзыв 2',
+            'content' => 'Содержание отзыва 2.',
+        ]);
+        $worker4->reviews()->create([
+            'title'   => 'Отзыв 3',
+            'content' => 'Содержание отзыва 3.',
+        ]);
+
+        $worker5->reviews()->create([
+            'title'   => 'Отзыв 1',
+            'content' => 'Содержание отзыва 1.',
+        ]);
+        $worker5->reviews()->create([
+            'title'   => 'Отзыв 2',
+            'content' => 'Содержание отзыва 2.',
+        ]);
+        $worker5->reviews()->create([
+            'title'   => 'Отзыв 3',
+            'content' => 'Содержание отзыва 3.',
+        ]);
+
+        $worker6->reviews()->create([
+            'title'   => 'Отзыв 1',
+            'content' => 'Содержание отзыва 1.',
+        ]);
+        $worker6->reviews()->create([
+            'title'   => 'Отзыв 2',
+            'content' => 'Содержание отзыва 2.',
+        ]);
+        $worker6->reviews()->create([
+            'title'   => 'Отзыв 3',
+            'content' => 'Содержание отзыва 3.',
+        ]);
+
+        // ---------------------------------------------------------------------------
+        // Отношение один к многим полиморф (One To Many (Polymorphic)) - конец
+        // ---------------------------------------------------------------------------
+
 
         dump($worker1->name);
         dump($worker2->name);
@@ -378,7 +500,7 @@ class DevCommand extends Command
         dump('Многие ко многим готовы');
     }
 
-    private function prepareOneToOnePolymorphic()
+    private function preparePolymorphic()
     {
         $clientData1 = [
             'name' => 'Клиент 1',
@@ -394,7 +516,11 @@ class DevCommand extends Command
         $client2 = Client::query()->create($clientData2);
         $client3 = Client::query()->create($clientData3);
 
-        // Отношение один к одному полиморф (One To One (Polymorphic))
+
+        // ---------------------------------------------------------------------------
+        // Отношение один к одному полиморф (One To One (Polymorphic)) - начало
+        // ---------------------------------------------------------------------------
+
         $client1->avatar()->create([
             'path' => 'clients/avatar/client1.img',
         ]);
@@ -404,6 +530,58 @@ class DevCommand extends Command
         $client3->avatar()->create([
             'path' => 'clients/avatar/client3.img',
         ]);
+
+        // ---------------------------------------------------------------------------
+        // Отношение один к одному полиморф (One To One (Polymorphic)) - конец
+        // ---------------------------------------------------------------------------
+
+
+        // ---------------------------------------------------------------------------
+        // Отношение один к многим полиморф (One To Many (Polymorphic)) - начало
+        // ---------------------------------------------------------------------------
+
+        $client1->reviews()->create([
+            'title'   => 'Отзыв 1',
+            'content' => 'Содержание отзыва 1.',
+        ]);
+        $client1->reviews()->create([
+            'title'   => 'Отзыв 2',
+            'content' => 'Содержание отзыва 2.',
+        ]);
+        $client1->reviews()->create([
+            'title'   => 'Отзыв 3',
+            'content' => 'Содержание отзыва 3.',
+        ]);
+
+        $client2->reviews()->create([
+            'title'   => 'Отзыв 1',
+            'content' => 'Содержание отзыва 1.',
+        ]);
+        $client2->reviews()->create([
+            'title'   => 'Отзыв 2',
+            'content' => 'Содержание отзыва 2.',
+        ]);
+        $client2->reviews()->create([
+            'title'   => 'Отзыв 3',
+            'content' => 'Содержание отзыва 3.',
+        ]);
+
+        $client3->reviews()->create([
+            'title'   => 'Отзыв 1',
+            'content' => 'Содержание отзыва 1.',
+        ]);
+        $client3->reviews()->create([
+            'title'   => 'Отзыв 2',
+            'content' => 'Содержание отзыва 2.',
+        ]);
+        $client3->reviews()->create([
+            'title'   => 'Отзыв 3',
+            'content' => 'Содержание отзыва 3.',
+        ]);
+
+        // ---------------------------------------------------------------------------
+        // Отношение один к многим полиморф (One To Many (Polymorphic)) - конец
+        // ---------------------------------------------------------------------------
 
         dd('Клиенты готовы');
     }

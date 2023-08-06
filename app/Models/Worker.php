@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 class Worker extends Model
@@ -63,5 +64,16 @@ class Worker extends Model
     public function avatar(): MorphOne
     {
         return $this->morphOne(Avatar::class, 'avatarable');
+    }
+
+    /**
+     * Комментарии, которые принадлежат работнику.
+     * Отношение один ко многим полиморф (One To Many (Polymorphic))
+     *
+     * @return MorphMany
+     */
+    public function reviews(): MorphMany
+    {
+        return $this->morphMany(Review::class, 'reviewable');
     }
 }
