@@ -11,6 +11,7 @@ use App\Models\Position;
 use App\Models\Profile;
 use App\Models\Project;
 use App\Models\Review;
+use App\Models\Tag;
 use App\Models\Worker;
 use Illuminate\Console\Command;
 
@@ -38,6 +39,7 @@ class DevCommand extends Command
         // $this->prepareData();
         // $this->prepareManyToMany();
         // $this->preparePolymorphic();
+        // $this->prepareTags();
 
         // Получаем должность
         $position = Position::query()->find(1);
@@ -56,12 +58,12 @@ class DevCommand extends Command
         // }
 
         // Получаем работника
-        $worker = Worker::query()->find(1);
+        $worker1 = Worker::query()->find(1);
         // // Находим профиль по работнику
         // if (isset($worker->profile)) {
-        //     $profile = $worker->profile->toArray();
-        //     $position = $worker->position->toArray();
-        //     $projects = $worker->projects->toArray();
+        //     $profile = $worker1->profile->toArray();
+        //     $position = $worker1->position->toArray();
+        //     $projects = $worker1->projects->toArray();
         //
         //     // dump($worker->toArray());
         //     dump($position);
@@ -127,17 +129,58 @@ class DevCommand extends Command
         // Отношение один к многим полиморф (One To Many (Polymorphic)) - начало
         // ---------------------------------------------------------------------------
 
-        $worker1 = Worker::query()->find(1);
-        dump($worker1->reviews->toArray());
-
-        $client1 = Client::query()->find(1);
-        dump($client1->reviews->toArray());
-
-        $review4 = Review::query()->find(4);
-        dd($review4->reviewable->toArray());
+        // $worker1 = Worker::query()->find(1);
+        // dump($worker1->reviews->toArray());
+        //
+        // $client1 = Client::query()->find(1);
+        // dump($client1->reviews->toArray());
+        //
+        // $review4 = Review::query()->find(4);
+        // dd($review4->reviewable->toArray());
 
         // ---------------------------------------------------------------------------
         // Отношение один к многим полиморф (One To Many (Polymorphic)) - конец
+        // ---------------------------------------------------------------------------
+
+        // ---------------------------------------------------------------------------
+        // Отношение многие ко многим полиморф (Many To Many (Polymorphic)) - начало
+        // ---------------------------------------------------------------------------
+
+        $tag1 = Tag::query()->find(1);
+        $tag2 = Tag::query()->find(2);
+        $tag3 = Tag::query()->find(3);
+
+        $worker1 = Worker::query()->find(1);
+        $worker2 = Worker::query()->find(2);
+
+        $client1 = Client::query()->find(1);
+        $client2 = Client::query()->find(2);
+
+        // Запись данных в таблицу 'taggables'
+        // $worker1->tags()->attach([$tag1->id, $tag2->id, $tag3->id,]);
+        // $worker2->tags()->attach([$tag1->id, $tag2->id, ]);
+
+        // $client1->tags()->attach([$tag1->id, $tag2->id, $tag3->id,]);
+        // $client2->tags()->attach([$tag1->id, $tag2->id, ]);
+
+        // dd('Данные многие ко многим у работников и клиентов записаны.');
+
+        dump($worker1->tags->toArray());
+        dump($worker2->tags->toArray());
+
+        dump($client1->tags->toArray());
+        dump($client2->tags->toArray());
+
+        dump($tag1->workers->toArray());
+        dump($tag2->workers->toArray());
+        dump($tag3->workers->toArray());
+
+        dump($tag1->clients->toArray());
+        dump($tag2->clients->toArray());
+        dump($tag3->clients->toArray());
+
+        // ---------------------------------------------------------------------------
+        // Отношение многие ко многим полиморф (Many To Many (Polymorphic)) - конец
         // ---------------------------------------------------------------------------
 
 
@@ -353,7 +396,6 @@ class DevCommand extends Command
         // ---------------------------------------------------------------------------
         // Отношение один к многим полиморф (One To Many (Polymorphic)) - конец
         // ---------------------------------------------------------------------------
-
 
         dump($worker1->name);
         dump($worker2->name);
@@ -583,6 +625,22 @@ class DevCommand extends Command
         // Отношение один к многим полиморф (One To Many (Polymorphic)) - конец
         // ---------------------------------------------------------------------------
 
-        dd('Клиенты готовы');
+        dump('Клиенты готовы');
     }
+
+    private function prepareTags()
+    {
+        $tag1 = Tag::query()->create([
+            'name' => 'Тег 1',
+        ]);
+        $tag2 = Tag::query()->create([
+            'name' => 'Тег 2',
+        ]);
+        $tag3 = Tag::query()->create([
+            'name' => 'Тег 3',
+        ]);
+
+        dd('Теги готовы');
+    }
+
 }
