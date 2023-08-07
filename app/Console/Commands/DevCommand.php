@@ -36,10 +36,12 @@ class DevCommand extends Command
      */
     public function handle()
     {
+        // 1-ый этап загрузки данный в БД - начало
         // $this->prepareData();
         // $this->prepareManyToMany();
         // $this->preparePolymorphic();
         // $this->prepareTags();
+        // 1-ый этап загрузки данный в БД - конец
 
         // Получаем должность
         $position = Position::query()->find(1);
@@ -157,30 +159,49 @@ class DevCommand extends Command
         $client2 = Client::query()->find(2);
 
         // Запись данных в таблицу 'taggables'
+        // 2-ой этап загрузки данный в БД - начало
         // $worker1->tags()->attach([$tag1->id, $tag2->id, $tag3->id,]);
         // $worker2->tags()->attach([$tag1->id, $tag2->id, ]);
-
+        //
         // $client1->tags()->attach([$tag1->id, $tag2->id, $tag3->id,]);
         // $client2->tags()->attach([$tag1->id, $tag2->id, ]);
-
+        //
         // dd('Данные многие ко многим у работников и клиентов записаны.');
+        // 2-ой этап загрузки данный в БД - конец
 
-        dump($worker1->tags->toArray());
-        dump($worker2->tags->toArray());
-
-        dump($client1->tags->toArray());
-        dump($client2->tags->toArray());
-
-        dump($tag1->workers->toArray());
-        dump($tag2->workers->toArray());
-        dump($tag3->workers->toArray());
-
-        dump($tag1->clients->toArray());
-        dump($tag2->clients->toArray());
-        dump($tag3->clients->toArray());
+        // dump($worker1->tags->toArray());
+        // dump($worker2->tags->toArray());
+        //
+        // dump($client1->tags->toArray());
+        // dump($client2->tags->toArray());
+        //
+        // dump($tag1->workers->toArray());
+        // dump($tag2->workers->toArray());
+        // dump($tag3->workers->toArray());
+        //
+        // dump($tag1->clients->toArray());
+        // dump($tag2->clients->toArray());
+        // dump($tag3->clients->toArray());
 
         // ---------------------------------------------------------------------------
         // Отношение многие ко многим полиморф (Many To Many (Polymorphic)) - конец
+        // ---------------------------------------------------------------------------
+
+
+        // ---------------------------------------------------------------------------
+        // Отношения с сортировкой или выборкой (Sorting or Sampling) - начало
+        // ---------------------------------------------------------------------------
+
+        $position = Position::query()->find(2);
+        $middleAgeWorkers = $position->middleAgeWorkers()->orderBy('surname')->get();
+        $oldestWorker = $position->oldestWorker;
+        $youngestWorker = $position->youngestWorker;
+        dump($oldestWorker->toArray());
+        dump($youngestWorker->toArray());
+        dd($middleAgeWorkers->toArray());
+
+        // ---------------------------------------------------------------------------
+        // Отношения с сортировкой или выборкой (Sorting or Sampling) - конец
         // ---------------------------------------------------------------------------
 
 
