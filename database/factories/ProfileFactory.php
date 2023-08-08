@@ -37,7 +37,8 @@ class ProfileFactory extends Factory
             'skill'             => implode(', ', $skills),
             'experience'        => fake()->numberBetween(2, 5),
             'finished_study_at' => fake()->dateTimeInInterval('-10 years ago', '-3 years ago'),
-            'worker_id'         => fake()->unique()->numberBetween(1, $workers->count()),
+            'worker_id'         => Worker::factory()->create(),
+            // 'worker_id'         => fake()->unique()->numberBetween(1, $workers->count()),
         ];
     }
 }

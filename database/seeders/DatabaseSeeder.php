@@ -20,8 +20,8 @@ class DatabaseSeeder extends Seeder
         $this->command->info('Таблица должностей загружена данными!');
 
         $this->call([
-            WorkerSeeder::class,
-            ProfileSeeder::class
+            // WorkerSeeder::class,
+            ProfileSeeder::class // WorkerSeeder::class создаётся внутри ProfileSeeder для каждого профиля соответственно
         ]);
         $this->command->info('Таблицы работников и их профили загружены данными!');
 
