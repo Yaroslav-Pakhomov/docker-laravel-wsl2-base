@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Events\Worker\CreatedEvent as WorkerCreatedEvent;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -25,6 +26,25 @@ class Worker extends Model
      * @var array
      */
     protected $guarded = [];
+
+    /**
+     * Метод для работы с Событиями и Слушателями
+     *
+     * @return void
+     */
+    protected static function booted(): void
+    {
+        // Событие создания у модели
+        static::created(function (Worker $worker) {
+
+            event(new WorkerCreatedEvent($worker));
+
+            // // Короткий способ при создании рабочего сразу создавать его пустой профиль
+            // Profile::query()->create([
+            //     'worker_id' => $worker->id,
+            // ]);
+        });
+    }
 
     /**
      * Получите профиль, который имеет работник.
