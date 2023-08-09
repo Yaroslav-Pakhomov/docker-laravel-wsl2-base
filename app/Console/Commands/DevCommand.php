@@ -192,18 +192,31 @@ class DevCommand extends Command
         // Отношения с сортировкой или выборкой (Sorting or Sampling) - начало
         // ---------------------------------------------------------------------------
 
-        $position = Position::query()->find(2);
-        $middleAgeWorkers = $position->middleAgeWorkers()->orderBy('surname')->get();
-        $oldestWorker = $position->oldestWorker;
-        $youngestWorker = $position->youngestWorker;
-        dump($oldestWorker->toArray());
-        dump($youngestWorker->toArray());
-        dd($middleAgeWorkers->toArray());
+        // $position = Position::query()->find(2);
+        // $middleAgeWorkers = $position->middleAgeWorkers()->orderBy('surname')->get();
+        // $oldestWorker = $position->oldestWorker;
+        // $youngestWorker = $position->youngestWorker;
+        // dump($oldestWorker->toArray());
+        // dump($youngestWorker->toArray());
+        // dd($middleAgeWorkers->toArray());
 
         // ---------------------------------------------------------------------------
         // Отношения с сортировкой или выборкой (Sorting or Sampling) - конец
         // ---------------------------------------------------------------------------
 
+        // ---------------------------------------------------------------------------
+        // События и Слушатели (Event и Listener), Событие обновления - начало
+        // ---------------------------------------------------------------------------
+
+        $worker1 = Worker::query()->find(1);
+        $worker1->update([
+            'name' => 'Савва',
+            'age'  => '25.000',
+        ]);
+
+        // ---------------------------------------------------------------------------
+        // События и Слушатели (Event и Listener), Событие обновления - конец
+        // ---------------------------------------------------------------------------
 
         return 0;
     }

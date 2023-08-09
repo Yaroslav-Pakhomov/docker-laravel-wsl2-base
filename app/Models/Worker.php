@@ -44,6 +44,18 @@ class Worker extends Model
             //     'worker_id' => $worker->id,
             // ]);
         });
+
+        // Событие обновления у модели
+        static::updated(function (Worker $worker) {
+            // При проверке данных на изменение нужно приводить данные к типу, который указан в таблице и сравнивать оператором эквивалентности '!=='
+            if ($worker->wasChanged() && ((int)$worker->getOriginal('age') !== (int)$worker->getAttributes()['age'])) {
+
+                dump($worker->getOriginal('age'), $worker->getAttributes()['age']);
+
+                // dd($worker->toArray());
+                // event(new WorkerUpdatedEvent($worker));
+            }
+        });
     }
 
     /**
