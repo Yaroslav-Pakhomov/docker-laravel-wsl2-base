@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
+use App\Jobs\Worker\SomeJob;
 use App\Models\Avatar;
 use App\Models\Client;
 use App\Models\Department;
@@ -222,40 +223,53 @@ class DevCommand extends Command
         // Мягкое удаление (Soft Delete) - начало
         // ---------------------------------------------------------------------------
 
-        // При мягком удалении не найдёт
-        $worker1 = Worker::query()->find(1);
-        $worker2 = Worker::query()->find(2);
-        // $worker1->delete();
-        // $worker2->delete();
-
-        // Ищем работника с учётом мягкого удаления
-        $worker1 = Worker::withTrashed()->find(1);
-
-        // Без мягкого удаление
-        $workers = Worker::all();
-
-        // Все работники, включая с мягким удалением
-        $workers = Worker::withTrashed()->get();
+        // // При мягком удалении не найдёт
+        // $worker1 = Worker::query()->find(1);
+        // $worker2 = Worker::query()->find(2);
+        // // $worker1->delete();
+        // // $worker2->delete();
+        //
+        // // Ищем работника с учётом мягкого удаления
+        // $worker1 = Worker::withTrashed()->find(1);
+        //
+        // // Без мягкого удаление
+        // $workers = Worker::all();
+        //
+        // // Все работники, включая с мягким удалением
+        // $workers = Worker::withTrashed()->get();
+        // // dd($workers->count());
+        //
+        // // Обратимо ли удалён
+        // // $worker1->trashed();
+        //
+        // // Восстановление мягко удалённого объекта
+        // // $worker1->restore();
+        //
+        // // Безвозвратное удаление моделей
+        // // $worker1->forceDelete();
+        //
+        // // Получаем только обратимо удалённые
+        // $workers = Worker::onlyTrashed()->get();
+        //
+        // dump($workers->toArray());
         // dd($workers->count());
-
-        // Обратимо ли удалён
-        // $worker1->trashed();
-
-        // Восстановление мягко удалённого объекта
-        // $worker1->restore();
-
-        // Безвозвратное удаление моделей
-        // $worker1->forceDelete();
-
-        // Получаем только обратимо удалённые
-        $workers = Worker::onlyTrashed()->get();
-
-        dump($workers->toArray());
-        dd($workers->count());
-
 
         // ---------------------------------------------------------------------------
         // Мягкое удаление (Soft Delete) - конец
+        // ---------------------------------------------------------------------------
+
+
+        // ---------------------------------------------------------------------------
+        // Очереди и Работы (Queue и Jobs) - начало
+        // ---------------------------------------------------------------------------
+
+        // Выполнение работы, добавление в таблицу очереди
+        SomeJob::dispatch();
+        // Указание названия очереди - onQueue('some_queue')
+        SomeJob::dispatch()->onQueue('some_queue');
+
+        // ---------------------------------------------------------------------------
+        // Очереди и Работы (Queue и Jobs) - конец
         // ---------------------------------------------------------------------------
 
         return 0;
