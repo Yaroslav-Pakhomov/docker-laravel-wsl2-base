@@ -21,7 +21,7 @@ return new class extends Migration {
             $table->date('finished_study_at')->nullable();
 
             // FK
-            $table->foreignId('worker_id')->nullable()->constrained('workers')->cascadeOnUpdate()->cascadeOnDelete();
+            $table->foreignId('worker_id')->nullable()->constrained('workers')->cascadeOnUpdate()->nullOnDelete();
 
             // IDx
             $table->index('worker_id');

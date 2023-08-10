@@ -25,6 +25,9 @@ return new class extends Migration {
             // IDx
             $table->index('position_id');
 
+            // Мягкое удаление
+            $table->softDeletes();
+
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
 

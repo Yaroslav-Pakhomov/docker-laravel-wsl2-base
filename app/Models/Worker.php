@@ -13,10 +13,14 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Worker extends Model
 {
     use HasFactory;
+
+    // Мягкое удаление
+    use SoftDeletes;
 
     protected $table = 'workers';
 
