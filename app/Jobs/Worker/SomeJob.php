@@ -23,15 +23,16 @@ class SomeJob implements ShouldQueue
 
     /**
      * Выполнить задание. Вся логика работы очереди.
-     *
      * Выполняется то, что прописана в момент запуска работы (Job),
      * а не то, что было прописано в момент внесения работы
      * в таблицу 'jobs' у очереди
      */
     public function handle(): void
     {
-        $someString = 'Some string';
-        $someInt = 100;
-        dump($someString . ' ' . $someInt);
+        // $someString = 'Some string';
+        // $someInt = 100;
+        // dump($someString . ' ' . $someInt);
+
+        dd($var);
     }
 }
