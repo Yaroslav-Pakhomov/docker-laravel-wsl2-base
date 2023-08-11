@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\WorkerController;
 use Illuminate\Support\Facades\Route;
 
@@ -20,17 +21,30 @@ Route::get('/', static function () {
 
 // CRUD
 // Общая страница рабочих
-Route::get('/workers', [ WorkerController::class, 'index' ])->name('workers.index');
+Route::get('/workers', [WorkerController::class, 'index'])->name('workers.index');
 
 // Страница создания рабочего
-Route::get('/workers/create', [ WorkerController::class, 'create' ])->name('workers.create');
-Route::post('/workers', [ WorkerController::class, 'store' ])->name('workers.store');
+Route::get('/workers/create', [WorkerController::class, 'create'])->name('workers.create');
+Route::post('/workers', [WorkerController::class, 'store'])->name('workers.store');
 
 // Страница рабочего
-Route::get('/workers/{worker}', [ WorkerController::class, 'show' ])->name('workers.show');
+Route::get('/workers/{worker}', [WorkerController::class, 'show'])->name('workers.show');
 
 // Страница обновления рабочего
-Route::get('/workers/{worker}/edit', [ WorkerController::class, 'edit' ])->name('workers.edit');
-Route::patch('/workers/{worker}', [ WorkerController::class, 'update' ])->name('workers.update');
+Route::get('/workers/{worker}/edit', [WorkerController::class, 'edit'])->name('workers.edit');
+Route::patch('/workers/{worker}', [WorkerController::class, 'update'])->name('workers.update');
 
-Route::delete('/workers/{worker}', [ WorkerController::class, 'delete' ])->name('workers.delete');
+Route::delete('/workers/{worker}', [WorkerController::class, 'delete'])->name('workers.delete');
+
+// Laravel Breeze
+Route::get('/dashboard', static function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+require __DIR__ . '/auth.php';
