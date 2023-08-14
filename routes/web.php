@@ -19,9 +19,13 @@ Route::get('/', static function () {
     return view('welcome');
 });
 
-// CRUD
-Route::resource('workers', WorkerController::class)->except(['destroy']);
-Route::delete('/workers/{worker}', [WorkerController::class, 'delete'])->name('workers.delete');
+Route::name('workers.')->prefix('workers')->middleware(['auth', 'isAdmin'])->group(function () {
+
+    // CRUD
+    Route::resource('/', WorkerController::class)->except(['destroy']);
+    Route::delete('/{worker}', [WorkerController::class, 'delete'])->name('delete');
+
+});
 
 
 // Laravel Breeze
