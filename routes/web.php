@@ -20,21 +20,9 @@ Route::get('/', static function () {
 });
 
 // CRUD
-// Общая страница рабочих
-Route::get('/workers', [WorkerController::class, 'index'])->name('workers.index');
-
-// Страница создания рабочего
-Route::get('/workers/create', [WorkerController::class, 'create'])->name('workers.create');
-Route::post('/workers', [WorkerController::class, 'store'])->name('workers.store');
-
-// Страница рабочего
-Route::get('/workers/{worker}', [WorkerController::class, 'show'])->name('workers.show');
-
-// Страница обновления рабочего
-Route::get('/workers/{worker}/edit', [WorkerController::class, 'edit'])->name('workers.edit');
-Route::patch('/workers/{worker}', [WorkerController::class, 'update'])->name('workers.update');
-
+Route::resource('workers', WorkerController::class)->except(['destroy']);
 Route::delete('/workers/{worker}', [WorkerController::class, 'delete'])->name('workers.delete');
+
 
 // Laravel Breeze
 Route::get('/dashboard', static function () {
