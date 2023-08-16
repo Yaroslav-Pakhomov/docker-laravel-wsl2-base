@@ -1,9 +1,12 @@
 <x-layout-app>
     <h1>Index</h1>
     <div>
-        <div>
-            <a href="{{ route('workers.create') }}">Создать рабочего</a>
-        </div>
+        {{-- Проверка политики создания у пользователя --}}
+        @can('create', \App\Models\Worker::class)
+            <div>
+                <a href="{{ route('workers.create') }}">Создать рабочего</a>
+            </div>
+        @endcan
 
         {{--  Поиск - начало  --}}
 
@@ -79,14 +82,23 @@
 
                     <div>
                         <a href="{{ route('workers.show', $worker) }}">Перейти</a>
-                        <a href="{{ route('workers.edit', $worker) }}">Редактировать</a>
-                        <br>
-                        <br>
-                        <form method="POST" action="{{ route('workers.delete', $worker) }}">
-                            @csrf
-                            @method('DELETE')
-                            <input type="submit" id="worker_edit" value="Удалить">
-                        </form>
+
+                        {{-- Проверка политики редактирования у пользователя --}}
+                        @can('update', $worker)
+                            <a href="{{ route('workers.edit', $worker) }}">Редактировать</a>
+                        @endcan
+
+                        {{-- Проверка политики удаления у пользователя --}}
+                        @can('delete', $worker)
+                            <br>
+                            <br>
+                            <form method="POST" action="{{ route('workers.delete', $worker) }}">
+                                @csrf
+                                @method('DELETE')
+                                <input type="submit" id="worker_edit" value="Удалить">
+                            </form>
+                        @endcan
+
                     </div>
                     <br>
                 </div>

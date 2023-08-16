@@ -17,16 +17,26 @@
             <div>Age: {{ $worker->age }}</div>
             <div>Description: {{ $worker->description }}</div>
             <div>Is married: {{ $worker->is_married }}</div>
+            <br>
             <div>
                 <a href="{{ route('workers.index') }}">Назад</a>
-                <a href="{{ route('workers.edit', $worker) }}">Редактировать</a>
-                <br>
-                <br>
-                <form method="POST" action="{{ route('workers.delete', $worker) }}">
-                    @csrf
-                    @method('DELETE')
-                    <input type="submit" id="worker_edit" value="Удалить">
-                </form>
+
+                {{-- Проверка политики редактирования у пользователя --}}
+                @can('update', $worker)
+                    <a href="{{ route('workers.edit', $worker) }}">Редактировать</a>
+                @endcan
+
+                {{-- Проверка политики удаления у пользователя --}}
+                @can('delete', $worker)
+                    <br>
+                    <br>
+                    <form method="POST" action="{{ route('workers.delete', $worker) }}">
+                        @csrf
+                        @method('DELETE')
+                        <input type="submit" id="worker_edit" value="Удалить">
+                    </form>
+                @endcan
+
             </div>
         </div>
         <hr>

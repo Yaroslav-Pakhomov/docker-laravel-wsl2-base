@@ -19,11 +19,15 @@ Route::get('/', static function () {
     return view('welcome');
 });
 
-Route::name('workers.')->prefix('workers')->middleware(['auth', 'isAdmin'])->group(function () {
+Route::middleware(['auth',])->group(function () {
 
     // CRUD
-    Route::resource('/', WorkerController::class)->except(['destroy']);
-    Route::delete('/{worker}', [WorkerController::class, 'delete'])->name('delete');
+    Route::resource('workers', WorkerController::class)->except(['destroy']);
+
+    Route::name('workers.')->prefix('workers')->group(function () {
+        Route::delete('/{worker}', [WorkerController::class, 'delete'])->name('delete');
+    });
+
 
 });
 
