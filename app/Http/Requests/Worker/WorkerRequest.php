@@ -27,7 +27,17 @@ class WorkerRequest extends AbstractRequest
      */
     protected function createItem(): array
     {
-        $rules = [];
+        $rules = [
+            'hobby'       => [
+                'nullable',
+                'string',
+                'max:255',
+            ],
+            'position_id' => [
+                'nullable',
+                'integer',
+            ],
+        ];
 
         return array_merge(parent::createItem(), $rules);
     }
@@ -39,7 +49,17 @@ class WorkerRequest extends AbstractRequest
      */
     protected function updateItem(): array
     {
-        $rules = [];
+        $rules = [
+            'hobby'       => [
+                'nullable',
+                'string',
+                'max:255',
+            ],
+            'position_id' => [
+                'nullable',
+                'integer',
+            ],
+        ];
 
         return array_merge(parent::updateItem(), $rules);
     }

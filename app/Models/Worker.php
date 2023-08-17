@@ -39,7 +39,7 @@ class Worker extends Model
     protected static function booted(): void
     {
         // Событие создания у модели
-        static::created(function (Worker $worker) {
+        static::created(static function (Worker $worker) {
 
             event(new WorkerCreatedEvent($worker));
 
@@ -50,11 +50,11 @@ class Worker extends Model
         });
 
         // Событие обновления у модели
-        static::updated(function (Worker $worker) {
+        static::updated(static function (Worker $worker) {
             // При проверке данных на изменение нужно приводить данные к типу, который указан в таблице и сравнивать оператором эквивалентности '!=='
             if ($worker->wasChanged() && ((int)$worker->getOriginal('age') !== (int)$worker->getAttributes()['age'])) {
 
-                dump($worker->getOriginal('age'), $worker->getAttributes()['age']);
+                // dump($worker->getOriginal('age'), $worker->getAttributes()['age']);
 
                 // dd($worker->toArray());
                 // event(new WorkerUpdatedEvent($worker));
