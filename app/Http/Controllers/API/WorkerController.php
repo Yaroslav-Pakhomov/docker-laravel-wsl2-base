@@ -80,4 +80,19 @@ class WorkerController extends Controller
         // ->resolve() - избавляемся от слова 'data'
         return WorkerResource::make($worker)->resolve();
     }
+
+    /**
+     * @param Worker $worker
+     *
+     * @return JsonResponse
+     */
+    public function delete(Worker $worker): JsonResponse
+    {
+        // dd($worker->toArray());
+        $worker->delete();
+
+        return response()->json([
+            'message' => 'Работник успешно удалён',
+        ]);
+    }
 }
