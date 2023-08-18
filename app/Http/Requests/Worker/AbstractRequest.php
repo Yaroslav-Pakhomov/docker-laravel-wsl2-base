@@ -56,13 +56,13 @@ abstract class AbstractRequest extends FormRequest
             ],
             'surname'     => [
                 'nullable',
-                'min:3',
+                'min:1',
                 'string',
             ],
             'email'       => [
                 'nullable',
                 'between:3,100',
-                'email',
+                'string',
                 'unique:' . $this->entity['table'] . ',email',
             ],
             'age_from'    => [

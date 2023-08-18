@@ -33,7 +33,7 @@
                    value="{{ request()->get('surname') }}">
 
             <label for="email"></label>
-            <input id="email" type="email" name="email" class="" placeholder="Почта"
+            <input id="email" type="text" name="email" class="" placeholder="Почта"
                    value="{{ request()->get('email') }}">
 
             <label for="age_from"></label>

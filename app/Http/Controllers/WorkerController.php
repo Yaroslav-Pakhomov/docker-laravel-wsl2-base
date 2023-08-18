@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Http\Filters\Var1\WorkerFilter as WorkerFilterVar1;
 use App\Http\Requests\Worker\WorkerRequest;
 use App\Models\Worker;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -23,34 +24,8 @@ class WorkerController extends Controller
         $data = $request->validated();
         $workerQuery = Worker::query();
 
-        if (isset($data['name'])) {
-            $workerQuery->where('name', 'like', '%' . $data['name'] . '%');
-        }
-
-        if (isset($data['surname'])) {
-            $workerQuery->where('surname', 'like', '%' . $data['surname'] . '%');
-        }
-
-        if (isset($data['email'])) {
-            $workerQuery->where('email', 'like', '%' . $data['email'] . '%');
-        }
-
-        if (isset($data['age_from'])) {
-            $workerQuery->where('age', '>=', $data['age_from']);
-        }
-
-        if (isset($data['age_to'])) {
-            $workerQuery->where('age', '<=', $data['age_to']);
-        }
-
-        if (isset($data['description'])) {
-            $workerQuery->where('description', 'like', '%' . $data['description'] . '%');
-        }
-
-        if (isset($data['is_married'])) {
-            $workerQuery->where('is_married', true);
-        }
-
+        $workerFilter1 = new WorkerFilterVar1($data);
+        $workerFilter1->getFilters($workerQuery);
 
         $workers = $workerQuery->paginate(2);
 
