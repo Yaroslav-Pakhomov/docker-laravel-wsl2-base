@@ -7,13 +7,12 @@ namespace App\Http\Filters\Var1;
 
 use Illuminate\Database\Eloquent\Builder;
 
-class WorkerFilter
+class WorkerFilter extends AbstractFilter
 {
-    public array $params = [];
 
     /**
      * Поля фильтрации
-    */
+     */
     public const NAME = 'name';
     public const SURNAME = 'surname';
     public const EMAIL = 'email';
@@ -22,32 +21,7 @@ class WorkerFilter
     public const DESCRIPTION = 'description';
     public const IS_MARRIED = 'is_married';
 
-    /**
-     * @param array $params массив со значениями фильтрации
-     */
-    public function __construct(array $params)
-    {
-        $this->params = $params;
-    }
-
-    /**
-     * Вызываем те методы фильтрации, значения которых существует
-     */
-    public function getFilters(Builder $builder): void
-    {
-        foreach (self::getCallbacks() as $attribute => $method) {
-            if (isset($this->params[$attribute])) {
-                self::$method($builder, $this->params[$attribute]);
-            }
-        }
-    }
-
-    /**
-     * Возвращает необходимые методы для фильтрации
-     *
-     * @return array
-     */
-    public static function getCallbacks(): array
+    public function getCallbacks(): array
     {
         return [
             self::NAME        => 'getName',
@@ -68,7 +42,7 @@ class WorkerFilter
      *
      * @return void
      */
-    public static function getName(Builder $builder, string $value): void
+    public function getName(Builder $builder, string $value): void
     {
         $builder->where('name', 'like', '%' . $value . '%');
     }
@@ -81,7 +55,7 @@ class WorkerFilter
      *
      * @return void
      */
-    public static function getSurname(Builder $builder, string $value): void
+    public function getSurname(Builder $builder, string $value): void
     {
         $builder->where('surname', 'like', '%' . $value . '%');
     }
@@ -94,7 +68,7 @@ class WorkerFilter
      *
      * @return void
      */
-    public static function getEmail(Builder $builder, string $value): void
+    public function getEmail(Builder $builder, string $value): void
     {
         $builder->where('email', 'like', '%' . $value . '%');
     }
@@ -107,7 +81,7 @@ class WorkerFilter
      *
      * @return void
      */
-    public static function getAgeFrom(Builder $builder, string $value): void
+    public function getAgeFrom(Builder $builder, string $value): void
     {
         $builder->where('age', '>=', (int)$value);
     }
@@ -120,7 +94,7 @@ class WorkerFilter
      *
      * @return void
      */
-    public static function getAgeTo(Builder $builder, string $value): void
+    public function getAgeTo(Builder $builder, string $value): void
     {
         $builder->where('age', '<=', (int)$value);
     }
@@ -133,7 +107,7 @@ class WorkerFilter
      *
      * @return void
      */
-    public static function getDescription(Builder $builder, string $value): void
+    public function getDescription(Builder $builder, string $value): void
     {
         $builder->where('description', 'like', '%' . $value . '%');
     }
@@ -145,7 +119,7 @@ class WorkerFilter
      *
      * @return void
      */
-    public static function getIsMarried(Builder $builder): void
+    public function getIsMarried(Builder $builder): void
     {
         $builder->where('is_married', true);
     }

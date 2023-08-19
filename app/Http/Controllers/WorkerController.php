@@ -22,10 +22,10 @@ class WorkerController extends Controller
     public function index(WorkerRequest $request): View
     {
         $data = $request->validated();
-        $workerQuery = Worker::query();
 
+        // Фильтрация данных
         $workerFilter1 = new WorkerFilterVar1($data);
-        $workerFilter1->getFilters($workerQuery);
+        $workerQuery = Worker::filter($workerFilter1);
 
         $workers = $workerQuery->paginate(2);
 
