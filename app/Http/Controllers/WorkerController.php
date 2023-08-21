@@ -23,8 +23,12 @@ class WorkerController extends Controller
     {
         $data = $request->validated();
 
-        // Фильтрация данных
-        $workerFilter1 = new WorkerFilterVar1($data);
+        // // Фильтрация данных
+        // $workerFilter1 = new WorkerFilterVar1($data);
+        // 2-ой способ создания фильтра специально для Laravel
+        $workerFilter1 = app()->make(WorkerFilterVar1::class, [
+            'params' => $data,
+        ]);
         $workerQuery = Worker::filter($workerFilter1);
 
         $workers = $workerQuery->paginate(2);

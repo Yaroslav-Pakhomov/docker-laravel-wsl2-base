@@ -18,7 +18,7 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
- * @method static filter(WorkerFilterVar1 $workerFilter1)
+ * @method static filter(WorkerFilterVar1 $workerFilter1) - scopeFilter в трейте HasFilter
  */
 class Worker extends Model
 {
