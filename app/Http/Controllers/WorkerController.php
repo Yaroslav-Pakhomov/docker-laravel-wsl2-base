@@ -4,13 +4,22 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Http\Filters\Var1\WorkerFilter as WorkerFilterVar1;
+// use App\Http\Filters\Var1\WorkerFilter as WorkerFilterVar1;
+use App\Http\Filters\Var2\Worker\AgeFrom;
+use App\Http\Filters\Var2\Worker\AgeTo;
+use App\Http\Filters\Var2\Worker\Description;
+use App\Http\Filters\Var2\Worker\Email;
+use App\Http\Filters\Var2\Worker\IsMarried;
+use App\Http\Filters\Var2\Worker\Name;
+use App\Http\Filters\Var2\Worker\Surname;
 use App\Http\Requests\Worker\WorkerRequest;
 use App\Models\Worker;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\Access\Response;
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Pipeline\Pipeline;
 
 class WorkerController extends Controller
 {
@@ -18,18 +27,51 @@ class WorkerController extends Controller
      * @param WorkerRequest $request
      *
      * @return View
+     * @throws BindingResolutionException
      */
     public function index(WorkerRequest $request): View
     {
-        $data = $request->validated();
+        // --------------------------------------------------------------------------------
+        // Шаблон Filter для запросов (первый вариант фильтра) - начало
+        // --------------------------------------------------------------------------------
+
+        // $data = $request->validated();
 
         // // Фильтрация данных
+
+        // // 1-ый способ создания фильтра специально для Laravel
         // $workerFilter1 = new WorkerFilterVar1($data);
-        // 2-ой способ создания фильтра специально для Laravel
-        $workerFilter1 = app()->make(WorkerFilterVar1::class, [
-            'params' => $data,
-        ]);
-        $workerQuery = Worker::filter($workerFilter1);
+
+        // // 2-ой способ создания фильтра специально для Laravel
+        // $workerFilter1 = app()->make(WorkerFilterVar1::class, [
+        //     'params' => $data,
+        // ]);
+        // $workerQuery = Worker::filter($workerFilter1);
+
+        // --------------------------------------------------------------------------------
+        // Шаблон Filter для запросов (первый вариант фильтра) - конец
+        // --------------------------------------------------------------------------------
+
+        // --------------------------------------------------------------------------------
+        // Шаблон Filter на основе класса Pipeline (второй вариант фильтра) - начало
+        // --------------------------------------------------------------------------------
+
+        $workerQuery = app()->make(Pipeline::class)
+            ->send(Worker::query())
+            ->through([
+                Name::class,
+                Surname::class,
+                Email::class,
+                AgeFrom::class,
+                AgeTo::class,
+                Description::class,
+                IsMarried::class,
+            ])
+            ->thenReturn();
+
+        // --------------------------------------------------------------------------------
+        // Шаблон Filter на основе класса Pipeline (второй вариант фильтра) - конец
+        // --------------------------------------------------------------------------------
 
         $workers = $workerQuery->paginate(2);
 

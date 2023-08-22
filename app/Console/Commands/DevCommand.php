@@ -4,6 +4,13 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
+use App\Http\Filters\Var2\Worker\AgeFrom;
+use App\Http\Filters\Var2\Worker\AgeTo;
+use App\Http\Filters\Var2\Worker\Description;
+use App\Http\Filters\Var2\Worker\Email;
+use App\Http\Filters\Var2\Worker\IsMarried;
+use App\Http\Filters\Var2\Worker\Name;
+use App\Http\Filters\Var2\Worker\Surname;
 use App\Jobs\Worker\SomeJob;
 use App\Models\Avatar;
 use App\Models\Client;
@@ -15,6 +22,10 @@ use App\Models\Review;
 use App\Models\Tag;
 use App\Models\Worker;
 use Illuminate\Console\Command;
+use Illuminate\Contracts\Container\BindingResolutionException;
+use Illuminate\Pipeline\Pipeline;
+
+// use Illuminate\Routing\Pipeline;
 
 class DevCommand extends Command
 {
@@ -34,6 +45,7 @@ class DevCommand extends Command
 
     /**
      * Выполнение консольной команды, что она делает.
+     * @throws BindingResolutionException
      */
     public function handle()
     {
@@ -269,11 +281,44 @@ class DevCommand extends Command
         // SomeJob::dispatch()->onQueue('some_queue');
 
         // Работа сразу, а не в фоне для отладки, после этого имеет смысл записывать в таблицу 'jobs' с помощью dispatch()
-        SomeJob::dispatchSync()->onQueue('some_queue');
+        // SomeJob::dispatchSync()->onQueue('some_queue');
 
         // ---------------------------------------------------------------------------
         // Очереди и Работы (Queue и Jobs) - конец
         // ---------------------------------------------------------------------------
+
+
+        // --------------------------------------------------------------------------------
+        // Шаблон Filter на основе класса Pipeline (второй вариант фильтра) - начало
+        // --------------------------------------------------------------------------------
+
+        request()->merge([
+            'name' => null,
+            'surname' => 'ова',
+            'email' => '',
+            'age_from' => '',
+            'age_to' => '',
+            'description' => '',
+            'is_married' => 'on',
+        ]);
+        $workers = app()->make(Pipeline::class)
+            ->send(Worker::query())
+            ->through([
+                Name::class,
+                Surname::class,
+                Email::class,
+                AgeFrom::class,
+                AgeTo::class,
+                Description::class,
+                IsMarried::class,
+            ])
+            ->thenReturn();
+
+        dd($workers->get()->toArray());
+
+        // --------------------------------------------------------------------------------
+        // Шаблон Filter на основе класса Pipeline (второй вариант фильтра) - конец
+        // --------------------------------------------------------------------------------
 
         return 0;
     }
@@ -289,18 +334,18 @@ class DevCommand extends Command
 
         // Данные для записи в таблицу 'positions'
         $positionData1 = [
-            'title'         => 'Научный сотрудник',
-            'description'   => 'Описание должности научного сотрудника',
+            'title' => 'Научный сотрудник',
+            'description' => 'Описание должности научного сотрудника',
             'department_id' => $department1->id,
         ];
         $positionData2 = [
-            'title'         => 'Ведущий науный сотрудник',
-            'description'   => 'Описание должности ведущий научного сотрудника',
+            'title' => 'Ведущий науный сотрудник',
+            'description' => 'Описание должности ведущий научного сотрудника',
             'department_id' => $department1->id,
         ];
         $positionData3 = [
-            'title'         => 'Заведующий лаборатории',
-            'description'   => 'Описание должности заведующего лаборатории',
+            'title' => 'Заведующий лаборатории',
+            'description' => 'Описание должности заведующего лаборатории',
             'department_id' => $department1->id,
         ];
 
@@ -313,57 +358,57 @@ class DevCommand extends Command
 
         // Данные для записи в таблицу 'workers'
         $workerData1 = [
-            'name'        => 'Алексей',
-            'surname'     => 'Алексеев',
-            'email'       => 'aleckseev@mail.ru',
-            'age'         => 23,
+            'name' => 'Алексей',
+            'surname' => 'Алексеев',
+            'email' => 'aleckseev@mail.ru',
+            'age' => 23,
             'description' => 'Я Алексей Алексеев.',
-            'is_married'  => false,
+            'is_married' => false,
             'position_id' => $position1->id,
         ];
         $workerData2 = [
-            'name'        => 'Александр',
-            'surname'     => 'Александров',
-            'email'       => 'alecksandrov@mail.ru',
-            'age'         => 23,
+            'name' => 'Александр',
+            'surname' => 'Александров',
+            'email' => 'alecksandrov@mail.ru',
+            'age' => 23,
             'description' => 'Я Александр Александров.',
-            'is_married'  => false,
+            'is_married' => false,
             'position_id' => $position1->id,
         ];
         $workerData3 = [
-            'name'        => 'Семен',
-            'surname'     => 'Семенов',
-            'email'       => 'semenov@mail.ru',
-            'age'         => 35,
+            'name' => 'Семен',
+            'surname' => 'Семенов',
+            'email' => 'semenov@mail.ru',
+            'age' => 35,
             'description' => 'Я Семен Семенов.',
-            'is_married'  => true,
+            'is_married' => true,
             'position_id' => $position2->id,
         ];
         $workerData4 = [
-            'name'        => 'Иван',
-            'surname'     => 'Иванов',
-            'email'       => 'ivanov@mail.ru',
-            'age'         => 45,
+            'name' => 'Иван',
+            'surname' => 'Иванов',
+            'email' => 'ivanov@mail.ru',
+            'age' => 45,
             'description' => 'Я Иван Иванов.',
-            'is_married'  => true,
+            'is_married' => true,
             'position_id' => $position2->id,
         ];
         $workerData5 = [
-            'name'        => 'Петр',
-            'surname'     => 'Петров',
-            'email'       => 'petrov@mail.ru',
-            'age'         => 55,
+            'name' => 'Петр',
+            'surname' => 'Петров',
+            'email' => 'petrov@mail.ru',
+            'age' => 55,
             'description' => 'Я Петр Петров.',
-            'is_married'  => true,
+            'is_married' => true,
             'position_id' => $position3->id,
         ];
         $workerData6 = [
-            'name'        => 'Сидор',
-            'surname'     => 'Сидоров',
-            'email'       => 'sidorov@mail.ru',
-            'age'         => 65,
+            'name' => 'Сидор',
+            'surname' => 'Сидоров',
+            'email' => 'sidorov@mail.ru',
+            'age' => 65,
             'description' => 'Я Семен Семенов.',
-            'is_married'  => true,
+            'is_married' => true,
             'position_id' => $position2->id,
         ];
 
@@ -407,80 +452,80 @@ class DevCommand extends Command
         // ---------------------------------------------------------------------------
 
         $worker1->reviews()->create([
-            'title'   => 'Отзыв 1',
+            'title' => 'Отзыв 1',
             'content' => 'Содержание отзыва 1.',
         ]);
         $worker1->reviews()->create([
-            'title'   => 'Отзыв 2',
+            'title' => 'Отзыв 2',
             'content' => 'Содержание отзыва 2.',
         ]);
         $worker1->reviews()->create([
-            'title'   => 'Отзыв 3',
+            'title' => 'Отзыв 3',
             'content' => 'Содержание отзыва 3.',
         ]);
 
         $worker2->reviews()->create([
-            'title'   => 'Отзыв 1',
+            'title' => 'Отзыв 1',
             'content' => 'Содержание отзыва 1.',
         ]);
         $worker2->reviews()->create([
-            'title'   => 'Отзыв 2',
+            'title' => 'Отзыв 2',
             'content' => 'Содержание отзыва 2.',
         ]);
         $worker2->reviews()->create([
-            'title'   => 'Отзыв 3',
+            'title' => 'Отзыв 3',
             'content' => 'Содержание отзыва 3.',
         ]);
 
         $worker3->reviews()->create([
-            'title'   => 'Отзыв 1',
+            'title' => 'Отзыв 1',
             'content' => 'Содержание отзыва 1.',
         ]);
         $worker3->reviews()->create([
-            'title'   => 'Отзыв 2',
+            'title' => 'Отзыв 2',
             'content' => 'Содержание отзыва 2.',
         ]);
         $worker3->reviews()->create([
-            'title'   => 'Отзыв 3',
+            'title' => 'Отзыв 3',
             'content' => 'Содержание отзыва 3.',
         ]);
 
         $worker4->reviews()->create([
-            'title'   => 'Отзыв 1',
+            'title' => 'Отзыв 1',
             'content' => 'Содержание отзыва 1.',
         ]);
         $worker4->reviews()->create([
-            'title'   => 'Отзыв 2',
+            'title' => 'Отзыв 2',
             'content' => 'Содержание отзыва 2.',
         ]);
         $worker4->reviews()->create([
-            'title'   => 'Отзыв 3',
+            'title' => 'Отзыв 3',
             'content' => 'Содержание отзыва 3.',
         ]);
 
         $worker5->reviews()->create([
-            'title'   => 'Отзыв 1',
+            'title' => 'Отзыв 1',
             'content' => 'Содержание отзыва 1.',
         ]);
         $worker5->reviews()->create([
-            'title'   => 'Отзыв 2',
+            'title' => 'Отзыв 2',
             'content' => 'Содержание отзыва 2.',
         ]);
         $worker5->reviews()->create([
-            'title'   => 'Отзыв 3',
+            'title' => 'Отзыв 3',
             'content' => 'Содержание отзыва 3.',
         ]);
 
         $worker6->reviews()->create([
-            'title'   => 'Отзыв 1',
+            'title' => 'Отзыв 1',
             'content' => 'Содержание отзыва 1.',
         ]);
         $worker6->reviews()->create([
-            'title'   => 'Отзыв 2',
+            'title' => 'Отзыв 2',
             'content' => 'Содержание отзыва 2.',
         ]);
         $worker6->reviews()->create([
-            'title'   => 'Отзыв 3',
+            'title' => 'Отзыв 3',
             'content' => 'Содержание отзыва 3.',
         ]);
 
@@ -497,46 +542,46 @@ class DevCommand extends Command
 
         // Данные для записи в таблицу 'profiles'
         $profileData1 = [
-            'city'              => 'Москва',
-            'skill'             => 'JavaScript, PHP',
-            'experience'        => 3,
+            'city' => 'Москва',
+            'skill' => 'JavaScript, PHP',
+            'experience' => 3,
             'finished_study_at' => '2022-07-05',
             // 'worker_id'         => $worker1->id,
         ];
         $profileData2 = [
-            'city'              => 'Екатеринбург',
-            'skill'             => 'HTML, CSS, JavaScript, Python',
-            'experience'        => 3,
+            'city' => 'Екатеринбург',
+            'skill' => 'HTML, CSS, JavaScript, Python',
+            'experience' => 3,
             'finished_study_at' => '2022-07-05',
-            'worker_id'         => $worker2->id,
+            'worker_id' => $worker2->id,
         ];
         $profileData3 = [
-            'city'              => 'Санкт-Петербург',
-            'skill'             => 'Java',
-            'experience'        => 5,
+            'city' => 'Санкт-Петербург',
+            'skill' => 'Java',
+            'experience' => 5,
             'finished_study_at' => '2012-07-05',
-            'worker_id'         => $worker3->id,
+            'worker_id' => $worker3->id,
         ];
         $profileData4 = [
-            'city'              => 'Новосибирск',
-            'skill'             => 'C++',
-            'experience'        => 7,
+            'city' => 'Новосибирск',
+            'skill' => 'C++',
+            'experience' => 7,
             'finished_study_at' => '2002-07-05',
-            'worker_id'         => $worker4->id,
+            'worker_id' => $worker4->id,
         ];
         $profileData5 = [
-            'city'              => 'Иркутск',
-            'skill'             => 'C#',
-            'experience'        => 15,
+            'city' => 'Иркутск',
+            'skill' => 'C#',
+            'experience' => 15,
             'finished_study_at' => '1992-07-05',
-            'worker_id'         => $worker5->id,
+            'worker_id' => $worker5->id,
         ];
         $profileData6 = [
-            'city'              => 'Омск',
-            'skill'             => 'Java',
-            'experience'        => 25,
+            'city' => 'Омск',
+            'skill' => 'Java',
+            'experience' => 25,
             'finished_study_at' => '1982-07-05',
-            'worker_id'         => $worker6->id,
+            'worker_id' => $worker6->id,
         ];
 
 
@@ -674,41 +719,41 @@ class DevCommand extends Command
         // ---------------------------------------------------------------------------
 
         $client1->reviews()->create([
-            'title'   => 'Отзыв 1',
+            'title' => 'Отзыв 1',
             'content' => 'Содержание отзыва 1.',
         ]);
         $client1->reviews()->create([
-            'title'   => 'Отзыв 2',
+            'title' => 'Отзыв 2',
             'content' => 'Содержание отзыва 2.',
         ]);
         $client1->reviews()->create([
-            'title'   => 'Отзыв 3',
+            'title' => 'Отзыв 3',
             'content' => 'Содержание отзыва 3.',
         ]);
 
         $client2->reviews()->create([
-            'title'   => 'Отзыв 1',
+            'title' => 'Отзыв 1',
             'content' => 'Содержание отзыва 1.',
         ]);
         $client2->reviews()->create([
-            'title'   => 'Отзыв 2',
+            'title' => 'Отзыв 2',
             'content' => 'Содержание отзыва 2.',
         ]);
         $client2->reviews()->create([
-            'title'   => 'Отзыв 3',
+            'title' => 'Отзыв 3',
             'content' => 'Содержание отзыва 3.',
         ]);
 
         $client3->reviews()->create([
-            'title'   => 'Отзыв 1',
+            'title' => 'Отзыв 1',
             'content' => 'Содержание отзыва 1.',
         ]);
         $client3->reviews()->create([
-            'title'   => 'Отзыв 2',
+            'title' => 'Отзыв 2',
             'content' => 'Содержание отзыва 2.',
         ]);
         $client3->reviews()->create([
-            'title'   => 'Отзыв 3',
+            'title' => 'Отзыв 3',
             'content' => 'Содержание отзыва 3.',
         ]);
 

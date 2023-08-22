@@ -3,7 +3,6 @@
 namespace App\Jobs\Worker;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
@@ -33,6 +32,6 @@ class SomeJob implements ShouldQueue
         // $someInt = 100;
         // dump($someString . ' ' . $someInt);
 
-        dd($var);
+        // dd($var);
     }
 }
