@@ -5,22 +5,28 @@ namespace Tests\Feature\Auth;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
+use JsonException;
 use Tests\TestCase;
 
 class PasswordUpdateTest extends TestCase
 {
     use RefreshDatabase;
 
+    /**
+     * @throws JsonException
+     */
     public function test_password_can_be_updated(): void
     {
         $user = User::factory()->create();
 
         $response = $this
+            ->withSession(['_token' => 'bzz'])
             ->actingAs($user)
             ->from('/profile')
             ->put('/password', [
-                'current_password' => 'password',
-                'password' => 'new-password',
+                '_token'                => 'bzz',
+                'current_password'      => 'password',
+                'password'              => 'new-password',
                 'password_confirmation' => 'new-password',
             ]);
 
@@ -36,11 +42,13 @@ class PasswordUpdateTest extends TestCase
         $user = User::factory()->create();
 
         $response = $this
+            ->withSession(['_token' => 'bzz'])
             ->actingAs($user)
             ->from('/profile')
             ->put('/password', [
-                'current_password' => 'wrong-password',
-                'password' => 'new-password',
+                '_token'                => 'bzz',
+                'current_password'      => 'wrong-password',
+                'password'              => 'new-password',
                 'password_confirmation' => 'new-password',
             ]);
 

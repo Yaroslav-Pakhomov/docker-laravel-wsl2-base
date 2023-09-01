@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use JsonException;
 use Tests\TestCase;
 
 class ProfileTest extends TestCase
@@ -21,15 +22,20 @@ class ProfileTest extends TestCase
         $response->assertOk();
     }
 
+    /**
+     * @throws JsonException
+     */
     public function test_profile_information_can_be_updated(): void
     {
         $user = User::factory()->create();
 
         $response = $this
+            ->withSession(['_token' => 'bzz'])
             ->actingAs($user)
             ->patch('/profile', [
-                'name' => 'Test User',
-                'email' => 'test@example.com',
+                '_token' => 'bzz',
+                'name'   => 'Test User',
+                'email'  => 'test@example.com',
             ]);
 
         $response
@@ -43,15 +49,20 @@ class ProfileTest extends TestCase
         $this->assertNull($user->email_verified_at);
     }
 
+    /**
+     * @throws JsonException
+     */
     public function test_email_verification_status_is_unchanged_when_the_email_address_is_unchanged(): void
     {
         $user = User::factory()->create();
 
         $response = $this
+            ->withSession(['_token' => 'bzz'])
             ->actingAs($user)
             ->patch('/profile', [
-                'name' => 'Test User',
-                'email' => $user->email,
+                '_token' => 'bzz',
+                'name'   => 'Test User',
+                'email'  => $user->email,
             ]);
 
         $response
@@ -61,13 +72,18 @@ class ProfileTest extends TestCase
         $this->assertNotNull($user->refresh()->email_verified_at);
     }
 
+    /**
+     * @throws JsonException
+     */
     public function test_user_can_delete_their_account(): void
     {
         $user = User::factory()->create();
 
         $response = $this
+            ->withSession(['_token' => 'bzz'])
             ->actingAs($user)
             ->delete('/profile', [
+                '_token'   => 'bzz',
                 'password' => 'password',
             ]);
 
@@ -81,12 +97,15 @@ class ProfileTest extends TestCase
 
     public function test_correct_password_must_be_provided_to_delete_account(): void
     {
+        // $this->withoutExceptionHandling();
         $user = User::factory()->create();
 
         $response = $this
+            ->withSession(['_token' => 'bzz'])
             ->actingAs($user)
             ->from('/profile')
             ->delete('/profile', [
+                '_token'   => 'bzz',
                 'password' => 'wrong-password',
             ]);
 
