@@ -2,8 +2,12 @@
 
 namespace Tests\Unit;
 
-use PHPUnit\Framework\TestCase;
+// use PHPUnit\Framework\TestCase;
+use Tests\TestCase;
 
+/**
+ * @method get(string $string)
+ */
 class ExampleTest extends TestCase
 {
     /**

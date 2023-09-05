@@ -4,6 +4,7 @@ namespace Tests\Feature\Auth;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use JsonException;
 use Tests\TestCase;
 
 class PasswordConfirmationTest extends TestCase
@@ -19,13 +20,23 @@ class PasswordConfirmationTest extends TestCase
         $response->assertStatus(200);
     }
 
+    /**
+     * @throws JsonException
+     */
     public function test_password_can_be_confirmed(): void
     {
+        // для показа более чёткой ошибки у тестов
+        $this->withoutExceptionHandling();
+
         $user = User::factory()->create();
 
-        $response = $this->actingAs($user)->post('/confirm-password', [
-            'password' => 'password',
-        ]);
+        $response = $this
+            ->withSession(['_token' => 'bzz'])
+            ->actingAs($user)
+            ->post('/confirm-password', [
+                '_token'   => 'bzz',
+                'password' => 'password',
+            ]);
 
         $response->assertRedirect();
         $response->assertSessionHasNoErrors();
@@ -33,11 +44,18 @@ class PasswordConfirmationTest extends TestCase
 
     public function test_password_is_not_confirmed_with_invalid_password(): void
     {
+        // // для показа более чёткой ошибки у тестов
+        // $this->withoutExceptionHandling();
+
         $user = User::factory()->create();
 
-        $response = $this->actingAs($user)->post('/confirm-password', [
-            'password' => 'wrong-password',
-        ]);
+        $response = $this
+            ->withSession(['_token' => 'bzz'])
+            ->actingAs($user)
+            ->post('/confirm-password', [
+                '_token'   => 'bzz',
+                'password' => 'wrong-password',
+            ]);
 
         $response->assertSessionHasErrors();
     }
