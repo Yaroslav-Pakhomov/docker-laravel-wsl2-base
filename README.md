@@ -50,19 +50,19 @@
 * <a href="https://github.com/Yaroslav-Pakhomov/docker-laravel-wsl2-base/commit/904a9fb3789f012fa37a11ea7ef90c2e0894e901" title="soft-delete"> Мягкое удаление workers (Soft Delete), работа с консольной командой для теста </a>
 * <a href="https://github.com/Yaroslav-Pakhomov/docker-laravel-wsl2-base/commit/4c0c128929b6c52e409892707b0c8d6cd2020701" title="queues-jobs"> Очереди и Работы (Queues и Jobs), работа с консольной командой для теста </a>
 * <a href="https://github.com/Yaroslav-Pakhomov/docker-laravel-wsl2-base/commit/5c88491d9b5131a930aa78f5cc24ed6dde05802d" title="failed-jobs"> Таблица работ с ошибками (failed_jobs), работа с консольной командой для теста </a>
-* <a href="https://github.com/Yaroslav-Pakhomov/docker-laravel-wsl2-base/commit/090e3146b90b89bfe5a067a8b1940d6ece91821d" title="failed-jobs"> Установка Laravel Breeze авторизация </a>
-* Laravel Breeze подробное рассмотрение функционала
-* Ресурсный роутинг (Resource Routes)
-* Класс Middleware
-* Класс Policy (Политика прав пользователей), доработка маршрутизатора (Routing)
-* Postman (Создание API начало)
-* Класс Resource (выборка данных перед отправкой ответа API)
-* Завершение работы с REST API (Создание и обновление записей через API)
-* Завершение работы с REST API (Удаление записей через API)
-* Шаблон Filter Для запросов (1-ый вариант фильтра)
-* Шаблон Filter для запросов(первый вариант фильтра). Оптимизация шаблона фильтра
-* Шаблон Filter для запросов(первый вариант фильтра). Оптимизация шаблона фильтра, доработка
-* Шаблон Filter на основе класса Pipeline (второй вариант фильтра)
+* <a href="https://github.com/Yaroslav-Pakhomov/docker-laravel-wsl2-base/commit/090e3146b90b89bfe5a067a8b1940d6ece91821d" title="laravel-breeze"> Установка Laravel Breeze авторизация </a>
+* <a href="https://github.com/Yaroslav-Pakhomov/docker-laravel-wsl2-base/commit/6f1ddfecef65afa6cab68edbc190e52641511ef2" title="laravel-breeze"> Laravel Breeze подробное рассмотрение функционала </a>
+* <a href="https://github.com/Yaroslav-Pakhomov/docker-laravel-wsl2-base/commit/7fd2f6cc70320413fb4617551374ddda771a4751" title="resource-routes"> Ресурсный роутинг (Resource Routes) </a>
+* <a href="https://github.com/Yaroslav-Pakhomov/docker-laravel-wsl2-base/commit/34a69e3552e1f2a6dd6f3c971f397a8542660c36" title="middleware"> Класс Middleware </a>
+* <a href="https://github.com/Yaroslav-Pakhomov/docker-laravel-wsl2-base/commit/ff909a7883ab4bf7a75e3b50b98d6f2956b5df36" title="policy"> Класс Policy (Политика прав пользователей), доработка маршрутизатора (Routing) </a>
+* <a href="https://github.com/Yaroslav-Pakhomov/docker-laravel-wsl2-base/commit/4eb2172e42e165ed753a2a5a0c08c073bc0cbb81" title="postman-api"> Postman (Создание API начало) </a>
+* <a href="https://github.com/Yaroslav-Pakhomov/docker-laravel-wsl2-base/commit/ef65841d6c731434ec7f0bb2817ac48341fcca8d" title="resource"> Класс Resource (выборка данных перед отправкой ответа API) </a>
+* <a href="https://github.com/Yaroslav-Pakhomov/docker-laravel-wsl2-base/commit/1b3944c5e86980d103c56cf648a7d5f7b2db9caa" title="rest-api"> Завершение работы с REST API (Создание и обновление записей через API) </a>
+* <a href="https://github.com/Yaroslav-Pakhomov/docker-laravel-wsl2-base/commit/76b3ea82b317354bea234ec567ea84b9b8c0f978" title="rest-api"> Завершение работы с REST API (Удаление записей через API) </a>
+* <a href="https://github.com/Yaroslav-Pakhomov/docker-laravel-wsl2-base/commit/71d232e04fe98d3e449d64f638d210fa552196cf" title="filter-1"> Шаблон Filter Для запросов (1-ый вариант фильтра) </a>
+* <a href="https://github.com/Yaroslav-Pakhomov/docker-laravel-wsl2-base/commit/938f055c4483ad93e04129b322769345d7c73827" title="filter-1"> Шаблон Filter для запросов(первый вариант фильтра). Оптимизация шаблона фильтра </a>
+* <a href="https://github.com/Yaroslav-Pakhomov/docker-laravel-wsl2-base/commit/021f4d4f15dc89bdc5a7c2d4217b80fc6bc134b1" title="filter-1"> Шаблон Filter для запросов(первый вариант фильтра). Оптимизация шаблона фильтра, доработка </a>
+* <a href="https://github.com/Yaroslav-Pakhomov/docker-laravel-wsl2-base/commit/549f42abd41a7817417c8a60fba84ae734f8c21f" title="filter-2"> Шаблон Filter на основе класса Pipeline (второй вариант фильтра) </a>
 * <a href="https://github.com/Yaroslav-Pakhomov/docker-laravel-wsl2-base/commit/3f720dbc6efc231d6bdd10583d166c0e765ed9de" title="phpunit_test"> PHPUnit Тестирование, добавление пользовательских тестов, корректировка тестов аутентификации </a>
 
 <br>
